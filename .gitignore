@@ -1,0 +1,8 @@
+node_modules/
+bin/
+gen/
+build/
+apidata/
+.sass-cache/
+temp.txt
+passwords.json
