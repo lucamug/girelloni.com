@@ -1,7 +1,7 @@
 // Read the file and print its contents.
+var savePointsEvery = 4;
 var fs = require('fs'),
 	folder = 'source/GPS\ Data\ Iceland\ Berlin/',
-	// filename = 'LUCA_833000591_20120829_022328.TXT',
 	r = [];
 var files = fs.readdirSync(folder);
 
@@ -33,7 +33,7 @@ function processThisFile(filename) {
 		var row = array[i];
 		if (row.match(/^\$GPRMC/)) {
 			c++;
-			if (!(c % 4)) {
+			if (!(c % savePointsEvery)) {
 				var ll = getLatLng(row);
 				r.push([
 					'<trkpt lat="' + ll.lat + '" lon="' + ll.lon + '">',
