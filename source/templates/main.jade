@@ -730,8 +730,13 @@
 	];
 	var html = [];
 	var page = Iceland;
+	var photos = [];
 	for (var i = 0; i < page.length; i++) {
-		if (page[i].match(/^http/)) {
+		var row = page[i];
+		if (row.match(/^P?\d+$/)) {
+			photos.push(row);
+		}	
+		if (row.match(/^http/)) {
 			html.push([
 				'<a href="'+page[i]+'" imageanchor="1">',
 					'<img class="picture" src="'+page[i]+'" width="100%" />',
@@ -741,6 +746,7 @@
 			html.push(page[i] + "<br />");
 		}
 	}
+	console.log(photos.sort());
 	html = html.join('');
 mixin flag(countryEn)
 	svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
