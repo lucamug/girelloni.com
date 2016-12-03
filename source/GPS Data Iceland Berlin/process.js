@@ -33,7 +33,9 @@ function processThisFile(filename) {
 		var row = array[i];
 		if (row.match(/^\$GPRMC/)) {
 			c++;
+			/*jshint -W018 */
 			if (!(c % savePointsEvery)) {
+				/*jshint +W018 */
 				var ll = getLatLng(row);
 				r.push([
 					'<trkpt lat="' + ll.lat + '" lon="' + ll.lon + '">',
@@ -67,7 +69,7 @@ function getLatLng(d) {
 
 function toDD(degrees, minutes, direction) {
 	var out = parseInt(degrees) + (parseFloat(minutes) / 60);
-	if (direction == "S" || direction == "W") {
+	if (direction === "S" || direction === "W") {
 		out = out * -1.0;
 	}
 	return out.toFixed(6);

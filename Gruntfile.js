@@ -61,6 +61,7 @@ module.exports = function (grunt) {
 			dev: {
 				files: {
 					'build/development/index.html': 'source/templates/main.dev.jade',
+					'build/development/food.html': 'source/templates/food.jade',
 				},
 				options: {
 					client: false,
@@ -73,6 +74,7 @@ module.exports = function (grunt) {
 			prod: {
 				files: {
 					'build/production/index.html': 'source/templates/main.prod.jade',
+					'build/production/food.html': 'source/templates/food.jade',
 				},
 				options: {
 					client: false,
