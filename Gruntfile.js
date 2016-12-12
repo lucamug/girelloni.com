@@ -60,8 +60,10 @@ module.exports = function (grunt) {
 		jade: {
 			dev: {
 				files: {
-					'build/development/index.html': 'source/templates/main.dev.jade',
+					'build/development/bremerhaven.html': 'source/templates/page.bremerhaven.jade',
+					'build/development/iceland.html': 'source/templates/page.iceland.jade',
 					'build/development/food.html': 'source/templates/food.jade',
+					'build/development/home.html': 'source/templates/home.jade',
 				},
 				options: {
 					client: false,
