@@ -60,19 +60,15 @@ module.exports = function (grunt) {
 		jade: {
 			dev: {
 				files: {
-					'build/development/index.html': 'source/templates/main.dev.jade',
-				},
-				options: {
-					client: false,
-					pretty: true,
-					data: {
-						pkg: pkg,
-					}
-				},
-			},
-			prod: {
-				files: {
-					'build/production/index.html': 'source/templates/main.prod.jade',
+					'build/development/food.html': 'source/templates/food.jade',
+					'build/development/home.html': 'source/templates/home.jade',
+					'build/development/berlin.html': 'source/templates/page.berlin.jade',
+					'build/development/bremerhaven.html': 'source/templates/page.bremerhaven.jade',
+					'build/development/hamburg.html': 'source/templates/page.hamburg.jade',
+					'build/development/iceland.html': 'source/templates/page.iceland.jade',
+					'build/development/krakow.html': 'source/templates/page.krakow.jade',
+					'build/development/sicily.html': 'source/templates/page.sicily.jade',
+					'build/development/warsaw.html': 'source/templates/page.warsaw.jade',
 				},
 				options: {
 					client: false,

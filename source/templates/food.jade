@@ -1,0 +1,259 @@
+-
+	var data = [{
+		"title": "A method for extracting major workflow composed of ingredients, tools, and actions from cooking procedural text",
+		"desc": "A method for extracting a major workflow of cooking procedure from a Japanese recipe on the Web. It is utilized for various applications including recipe search, summarization, and visualization.",
+		"authors": "Yoko Yamakata, Shinji Imahori, Hirokuni Maeta, Shinsuke Mori",
+		"year": 2016,
+		"link": "http://www.ar.media.kyoto-u.ac.jp/publications/yamakata-CEA16.pdf"
+	}, {
+		"title": "Training the PR2 in Culinary Arts. A Natural Language Model for Parsing Recipes",
+		"authors": "Jessica Zhao, Alejandro Bordallo, Subramanian Ramamoorthy",
+		"desc": "a culinary language model for the kitchen by abstracting cooking instructions into a generalized tripartite form of ACTION, TARGET, TOOL.",
+		"link": "http://stanford.edu/~jesszhao/files/PR2cooking.pdf",
+		"year": 2016,
+	}, {
+		"title": "Predicting the Structure of Cooking Recipes",
+		"authors": "Jermsak Jermsurawong and Nizar Habash",
+		"desc": "An ingredient-instruction dependency tree data structure to represent recipes. The proposed representation allows for more refined comparison of recipes and recipe - parts, and is a step towards semantic representation of recipes",
+		"year": 2015,
+		"link": "http://www.aclweb.org/anthology/D/D15/D15-1090.pdf",
+	}, {
+		"title": "Flow Graph Corpus from Recipe Texts",
+		"authors": "Shinsuke Mori, Hirokuni Maeta, Yoko Yamakata, Tetsuro Sasada4",
+		"desc": "An attempt at annotating procedural texts with a flow graph as a representation of understanding.The domain we focus on is cooking recipe.",
+		"year": 2015,
+		"link": "https://pdfs.semanticscholar.org/7f88/398e8928d32366ebf725eb457cb2fa3a94bf.pdf",
+	}, {
+		"title": "Mise en Place: Unsupervised Interpretation of Instructional Recipes",
+		"authors": "Chloe Kiddon, Ganesa Thandavam Ponnuraj, Luke Zettlemoyer, and Yejin Choi",
+		"desc": "Automatically mapping instructional recipes to action graphs, which define what actions should be performed on which objects and in what order",
+		"year": 2015,
+		"link": "http://gthandavam.in/emnlp15_cooking.pdf"
+	}, {
+		"title": "Construction of a Cooking Ontology from Cooking Recipes and Patents",
+		"authors": "Hidetsugu Nanba, Toshiyuki Takezawa, Yoko Doi, Kazutoshi Sumiya, Miho Tsujita",
+		"desc": "A cooking ontology by means of pattern matching, statistical natural language processing techniques, and manual steps to identify hyponymy, synonymy, attributes, and meronymy.",
+		"link": "http://delivery.acm.org/10.1145/2650000/2641328/p507-nanba.pdf",
+		"year": 2015,
+	}, {
+		"title": "KUSK Dataset: Toward a Direct Understanding of Recipe Text and Human Cooking Activity",
+		"authors": "Atsushi Hashimoto, Shinsuke Mori, Tetsuro Sasada, Michihiko Minoh, Yoko Yamakata",
+		"desc": "Multimodal dataset for understanding cooking activities. To build the dataset, we instructed the subjects to perform cooking according to instructional texts shown on a display one by one. The instructional texts were generated from flow graphs, which were automatically extracted from recipes sampled from a Web site",
+		"year": 2014,
+		"link": "http://plata.ar.media.kyoto-u.ac.jp/publications/hashimoto-CEA14.pdf"
+	}, {
+		"title": "A Framework for Procedural Text Understanding",
+		"autohrs": "Hirokuni Maeta, Tetsuro Sasada, Shinsuke Mori",
+		"link": "http://www.aclweb.org/anthology/W15-2206",
+		"year": 2014,
+		"desc": "A framework for procedural text understanding. We tested our framework on cooking recipe texts annotated with a directed acyclic graph as their meaning."
+	}, {
+		"title": "Learning to Read Recipes: Activity Diagramming with Narrative Event Chains",
+		"link": "http://www3.cs.stonybrook.edu/~gponnuraj/thesis.pdf",
+		"authors": "Ganesa Thandavam Ponnuraj",
+		"desc": "Generate activity diagrams of the recipe text automatically, with the help of narrative event chains",
+		"year": 2014
+	}, {
+		"title": "Cooking with Semantics",
+		"authors": "Jon Malmaud, Earl J. Wagner, Nancy Chang, Kevin Murphy",
+		"desc": "How to extend [automatic interpretation of how-to instructions, such as cooking recipes,] using a model of pragmatics, based on a rich representation of world state",
+		"year": 2014,
+		"link": "https://www.cs.ubc.ca/~murphyk/Papers/acl2014.pdf"
+	}, {
+		"title": "Proceedings of the Cooking with Computers workshop (CwC)",
+		"authors": "Am´elie Cordier and Emmanuel Nauer",
+		"year": 2012,
+		"desc": "The “Cooking with Computers” workshop aims at gathering researchers from as many as possible fields of AI. A core application domain, which is cooking, is fixed and the main objective of this workshop is to show how some AI existing approaches could be used to solve problems in this domain.",
+		"link": "http://www.lirmm.fr/ecai2012/images/stories/ecai_doc/pdf/workshop/W29_proceedingsCWC2012.pdf",
+	}, {
+		"title": "CookIIS – A Case-Based Recipe Advisor",
+		"link": "http://engineers-pool.com/members/27/publications/2010-03-11_13.05.29_CCC09_INHBR.pdf",
+		"authors": "Norman Ihle, R´egis Newo, Alexandre Hanft, Kerstin Bach, Meike Reichle",
+		"year": 2010,
+		"desc": "CookIIS is a Case-Based Reasoning (CBR) system that provides recipe suggestions. The suggestions are created based on a given set of recipes that the system modifies according to a user’s specification.",
+	}, {
+		"title": "TAAABLE: Text Mining, Ontology Engineering, and Hierarchical Classification for Textual Case-Based Cooking",
+		"year": 2008,
+		"authors": "Fadi Badra, Rokia Bendaoud, Rim Bentebibel, Pierre-Antoine Champin, Julien Cojan, Am´elie Cordier, Sylvie Despr´es, St´ephanie Jean-Daubias, Jean Lieber, Thomas Meilender, et al.",
+		"desc": "Taaable is a Case-Based Reasoning (CBR, the process of solving new problems based on the solutions of similar past problems) system that uses a recipe book as a case base to answer cooking queries.Taaable participates in the Computer Cooking Contest since 2008. Its success is due, in particular, to a smart combination of various methods and techniques from knowledge - based systems: cbr, knowledge representation, knowledge acquisition and discovery, knowledge management, and natural language processing.",
+		"link": "https://hal.inria.fr/hal-00912767/document"
+	}, {
+		"title": "SOUR CREAM: Toward Semantic Processing of Recipes",
+		"authors": "Dan Tasse and Noah A. Smith",
+		"year": 2008,
+		"desc": "Preliminary work on SOUR CREAM (System to Organize and Understand Recipes, Capacitating Relatively Exciting Applications Meanwhile). The aim of this project is to develop new techniques for semantic parsing by focusing on the domain of cooking recipes. This report details the MILK meaning representation language and CURD, a database of recipes annotated in the MILK language. We also detail preliminary efforts at semantic processing using this dataset.",
+		"link": "http://www.lti.cs.cmu.edu/sites/default/files/cmulti08005.pdf"
+	}, {
+		"title": "Chef",
+		"authors": "David Morgan-Mar",
+		"desc": "Chef is a programming language in which programs look like recipes.",
+		"link": "http://www.dangermouse.net/esoteric/chef.html",
+		"year": 2003,
+	}, {
+		"title": "Structural Analysis of Cooking Preparation Steps in Japanese",
+		"year": 2000,
+		"link": "https://pdfs.semanticscholar.org/2cc8/d5f093697e191eadb9d83f3023afee00666c.pdf",
+		"authors": "Reiko HAMADA, Ichiro IDE, Shuichi SAKAI, Hidehiko TANAKA",
+		"overview": "A method to create process flow graphs automatically from textbooks for cooking programs. This is realized by understanding context by narrowing down the domain to cooking, and making use of domain specific constraints and knowledge."
+	}, {
+		"title": "Computer Cooking Competition (Computer Cooking Contest)",
+		"link": "http://cbrwiki.fdi.ucm.es/mediawiki/index.php/Computer_Cooking_Competition",
+		"desc": ["Given a restricted set of ingredients, the task is to cook something that tastes good. These events are usually holded within the International Conference on Case-Based Reasoning (ICCBR)",
+			"",
+			"2016 (9th) <a href='http://www.iccbr.gatech.edu/iccbr16/ccc.html'>Atlanta, USA, 31 October to 2 November</a>",
+			"2015 (8th) <a href='http://ccc2015.loria.fr/'>Frankfurt, Germany, 28 September</a>",
+			"2014 (7th) <a href='http://liris.cnrs.fr/ccc/ccc2014/doku.php'>Cork, Ireland, September</a>",
+			"2013 (6th) <a href='http://ijcai13.org/program/workshop/22'>Beijing, China, 3 to 9 August</a>",
+			"2012 (5th) <a href='http://www.empolis.com/en/news-events/archiv/computer-cooking-contest-2012.html'>Lyon, France, 3 September</a>",
+			"2011 (4th) <a href='http://liris.cnrs.fr/ccc/ccc2011/doku.php?id=welcome'>Greenwich, London, UK, 12 to 15 September</a>",
+			"2010 (3rd) <a href='http://www.iccbr.org/iccbr2010/html/computer_cooking.html'>Alessandria, Italy, 19 to 22 July</a>",
+			"2009 (2nd) <a href='http://www.wi2.uni-trier.de/shared/eccbr/ccc09/index.php?task=welcome'>Seattle, USA, 21 July</a>",
+			"2008 (1st) <a href='http://www.wi2.uni-trier.de/eccbr08/index.php-task=ccc.htm'>Trier, Germany, 1 September</a>",
+		].join("<br>")
+	}, {
+		"title": "Froglingo",
+		"desc": "Enter ingredients, cooking method, and/or origin",
+		"link": "http://www.froglingo.com/ccc/index.html",
+	}];
+
+	var images = {
+		i1: "https://1.bp.blogspot.com/-oEoFVr_8c2M/WEPs0IbKevI/AAAAAAAAFgc/PsaXon5PkOo0izQ2h5k7ofEg8sG_6oTdQCLcB/s1600/01.jpg",
+		i2: "https://3.bp.blogspot.com/-st92kbzLU-Y/WEPszsnZV2I/AAAAAAAAFgQ/VShZwEyGzhM-IVajsd0MPYRSSC0L0irtgCLcB/s1600/02.jpg",
+		i3: "https://4.bp.blogspot.com/-_RqsyUkuFBE/WEPsz39NCGI/AAAAAAAAFgU/lf6b9aK0_iM3wjawgGmNqYhQp5amrYqXgCLcB/s1600/03.jpg",
+		i4: "https://2.bp.blogspot.com/-KUCCBIH_eNQ/WEPs0Ovd2fI/AAAAAAAAFgY/k2RA6bEQ_rw_CrCxs06dXpgWVY9mHc8KwCLcB/s1600/04.jpg",
+		i5: "https://3.bp.blogspot.com/-NEcJH_xLV7o/WEPs01eft4I/AAAAAAAAFgg/CBjdrmm32NggIl4sGfLaLWhbarOQ0RpsQCLcB/s1600/05.jpg",
+		i6: "https://2.bp.blogspot.com/-linIguHKweI/WEPs1PAGMJI/AAAAAAAAFgk/5-rNgkZmA5M8D1XBxHepwuBnL3KBYh36gCLcB/s1600/06.jpg",
+		i7: "https://3.bp.blogspot.com/-MgfhTLLaZ2M/WEPs1R4JLtI/AAAAAAAAFgo/H_ZBtPJEAPYg3yz8pNOrKmVP1Z2zmAGUgCLcB/s1600/07.jpg",
+		i8: "https://1.bp.blogspot.com/-iMDxqh6cRaA/WEPs2NBg3MI/AAAAAAAAFgw/4M5amzL2UTUUOFXT0F8WhPep6AzPJwIwwCLcB/s1600/08.jpg",
+		i9: "https://3.bp.blogspot.com/-PEkOyJcju7I/WEPs1xX53aI/AAAAAAAAFgs/rxXuITsKzn0aszICaa9kJ8VJ1N9pXOcPwCLcB/s1600/09.jpg",
+
+		merging: "https://2.bp.blogspot.com/-9IykkUFQztI/WEPs2SJ2B7I/AAAAAAAAFg0/z_VP_55rufYLAub7Yj4yqjDuZKT1QEynQCLcB/s1600/merging-recipes.png",
+
+		// vue: "https://4.bp.blogspot.com/-gWYZNqrN0S0/WEPs2i5nfqI/AAAAAAAAFg4/1DEwUnfE7jA6-TB6YIgOK7_uN2jvJfu8QCLcB/s1600/vue.jpg",
+		vue: "https://4.bp.blogspot.com/-zdI1xihFiwc/WESRkEucF5I/AAAAAAAAFhY/X5Q1nXn-dOIGucm3hAWBJJeCTQ11FIRpgCPcB/s1600/vue3.png",
+		// vue: https://4.bp.blogspot.com/-w2AjMXkFKdw/WESRkZac7yI/AAAAAAAAFhc/ik8NpGjqN3k34mwa4vQ9QnMLcf_QjcAKACPcB/s1600/vue2.png",
+	};
+
+
+	var html = [];
+	for (var i = 0; i < data.length; i++) {
+		var row = data[i];
+		html.push([
+			'<li>',
+				'<h3>',
+					row.title,
+				'</h3>',
+				(row.authors ? [
+					'<p>',
+						'<i>By ' + row.authors + (row.year ? ' (' +row.year+ ')' : '') + '</i>',
+					'</p>',
+				].join("") : ""),
+				'<p>',
+					row.desc,
+				'</p>',
+				'<p>',
+					'<a href="'+row.link+'">',
+						row.link,
+					'</a>',
+				'</p>',
+			'</li>'
+		].join(''));
+		if (i === 3) {
+			html.push("<!--more-->");
+		}
+	}
+	var html2 = [];
+	for (var i = 1; i <= 9; i++) {
+		var name = '../../source/images/' + (i < 10 ? "0" : "")+ i +'.jpg';
+		name = images['i'+i];
+		html2.push([
+			'<div style="box-sizing: border-box; border-left: 8px solid #eee; border-bottom: 8px solid #eee; width: 33.333333%; overflow: hidden; float: left; height: 160px">',		
+			
+				'<a href="'+name+'" imageanchor="1">',
+					'<img style="width: 130%" src="' + name + '">',
+				'</a>',
+			'</div>'
+		].join(''));
+	}
+doctype html
+head
+	meta(name="version" content=pkg.version)
+	meta(charset='UTF-8')
+	meta(name='viewport', content='width=device-width, initial-scale=1.0')
+	title Blog
+	block livereload
+			script(src='http://localhost:35729/livereload.js')
+	block style
+	script.
+			document.documentElement.className = document.documentElement.className.replace(/no-js/, "yes-js");
+			document.documentElement.className = document.documentElement.className + (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ? " yes-touch" : " no-touch");
+			document.documentElement.className = document.documentElement.className + (/iPhone/i.test(navigator.userAgent) ? " yes-iPhone" : " no-iPhone");
+	block script
+body
+	h1 Food Recipes: Semantic representation, Formal Language and Visualization 
+
+	style.
+		.gist {
+		   max-width:80%;
+		   overflow:auto;
+		   margin: auto;
+		}
+
+		.gist .blob-wrapper.data {
+		   max-height:240px;
+		   overflow:auto;
+		}
+
+		.blob-wrapper.data {
+		   border: 8px solid #eee;
+		}
+
+
+
+	p I always enjoyed the precision that programming languages commands give instructions to computers and I have been wondering if that precision could be applied to food recipes.
+
+	p If computers could understand semantically a recipe, they would be able to perform many interesting tasks.
+
+	p For example a computer could
+
+	ul
+		li Scale the recipe: Not only multiplying ingredients but also adjusting the time and the difficulty
+		li Merge recipes fitting one into another taking advantage of the idle moments. It would be possible to plan several recipes with a certain deadline. Something like "I want to prepare Risotto alle Fragole and Arista for 3 people and everything should be ready by 7 pm". This is as example of simplified merging process:
+			div(style="text-align: center; margin: 2em 0")
+				a(href=images.merging imageanchor="1")
+					img(src=images.merging width="100%")
+		li Combine recipes to come out with new variation. There is the "Computer Cooking Contest" that is trying to achieve this result. The event is organised every year, see in the resources section for links.
+		li Using a version control system, such as Git, where could have people to add variations of the recipe creating branch, merging, committing, etc.
+		li Computers could, with the help of a machine or robot, cook for you
+
+	p This is an example of annotated recipe from the CURD database. This recipe is annotated using the MILK language:
+
+	div(style="margin: 2em auto")
+		script(src="https://gist.github.com/lucamug/9e6a11a7b65e79f1df703c57e3febab7.js")
+
+	h2 Visualization
+
+	p If the recipe is semantically represented inside the computer, it could be automatically visualised using some algorithm. A viable format could be similar to:
+		div(style="text-align: center; height: 240px; overflow-x: hidden; overflow-y: scroll; margin: 2em auto; width: 80%")
+			a(href=images.vue imageanchor="1")
+				img(style="border: 8px solid #eee !important; width: 98%" src=images.vue)
+	
+	p Other formats:
+
+
+	div(style="border-right: 8px solid #eee; border-top: 8px solid #eee; margin: 2em 0")!= html2.join('')
+		div(style="content: \"\"; display: table; clear: both")
+
+	p Video could also be used. Animation could fit better because could be generated in CG. I personally like this point of view in recipe video:
+
+	div(style="text-align: center; margin: 1em 0")
+		iframe(width="640" height="360" src="https://www.youtube.com/embed/KIJh_76qu0Y?rel=0" frameborder="0" allowfullscreen)
+
+	p And as a final note, this is a video of my mother that I took several years ago. Not a good example of clarity but... a good recipe:
+
+	div(style="text-align: center; margin: 1em 0")
+		iframe(width="480" height="360" src="https://www.youtube.com/embed/y_isZwAHL-I?rel=0" frameborder="0" allowfullscreen)
+
+	h2 Resources
+
+	ol!= html.join('')

@@ -1,0 +1,6 @@
+To convert file from txt to gpx:
+
+http://www.gpsvisualizer.com/convert_input
+
+The map for upload
+

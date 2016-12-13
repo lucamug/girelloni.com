@@ -1,3 +1,29 @@
+block content
+	-
+		var title = "Test";
+		var content = [
+			"test",
+		];
+-
+	var html = [];
+	var photos = [];
+	for (var i = 0; i < content.length; i++) {
+		var row = content[i];
+		if (row.match(/^P?\d+$/)) {
+			photos.push(row);
+		}	
+		if (row.match(/^http/)) {
+			html.push([
+				'<a href="'+content[i]+'" imageanchor="1">',
+					'<img class="picture" src="'+content[i]+'" width="100%" />',
+				'</a>'
+			].join(''));
+		} else {
+			html.push(content[i] + "<br />");
+		}
+	}
+	// console.log(photos.sort());
+	html = html.join('');
 doctype html
 head
 	meta(name="version" content=pkg.version)
@@ -7,157 +33,17 @@ head
 	block livereload
 		script(src='http://localhost:35729/livereload.js')
 	block style
+		// link(href='css/app.css', rel='stylesheet', type='text/css')
+	style.
+		img {width: 100px}
 	script.
 		document.documentElement.className = document.documentElement.className.replace(/no-js/, "yes-js");
 		document.documentElement.className = document.documentElement.className + (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ? " yes-touch" : " no-touch");
 		document.documentElement.className = document.documentElement.className + (/iPhone/i.test(navigator.userAgent) ? " yes-iPhone" : " no-iPhone");
 	block script
+		script(src='js/appCreation.js')
 body
-	.cp-flagsmall-container
-		.flag-small
-			div
-				span オーストリア　Austria
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					g(fill-rule='evenodd')
-						path(d='M640 480H0V0h640z', fill='#fff')
-						path(d='M640 480H0V319.997h640zm0-319.875H0V.122h640z', fill='#df0000')
-		.flag-small
-			div
-				span チェコ共和国　Czech Republic
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					defs
-						clippath#a
-							path(d='M-74 0h682.67v512H-74z', fill-opacity='.67')
-					g(clip-path='url(#a)', fill-rule='evenodd', stroke-width='1pt', transform='translate(69.38) scale(.94)')
-						path(d='M-74 0h768v512H-74z', fill='#e80000')
-						path(d='M-74 0h768v256H-74z', fill='#fff')
-						path(d='M-74 0l382.73 255.67L-74 511.01V0z', fill='#00006f')
-		.flag-small
-			div
-				span フィンランド　Finland
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					path(d='M0 0h640v480H0z', fill='#fff')
-					path(d='M0 174.545h640v130.909H0z', fill='#003580')
-					path(d='M175.455 0h130.909v480H175.455z', fill='#003580')
-		.flag-small
-			div
-				span フランス　France
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					g(fill-rule='evenodd', stroke-width='1pt')
-						path(d='M0 0h640v480H0z', fill='#fff')
-						path(d='M0 0h213.337v480H0z', fill='#00267f')
-						path(d='M426.662 0H640v480H426.662z', fill='#f31830')
-		.flag-small
-			div
-				span ドイツ　Germany
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					path(d='M0 320h640v160.002H0z', fill='#ffce00')
-					path(d='M0 0h640v160H0z')
-					path(d='M0 160h640v160H0z', fill='#d00')
-		.flag-small
-			div
-				span アイスランド　Iceland
-				svg(xmlns='http://www.w3.org/2000/svg',  viewbox='0 0 640 480')
-					defs
-						clippath#a
-							path(fill-opacity='.67', d='M0 0h640v480H0z')
-					g(fill-rule='evenodd', stroke-width='0', clip-path='url(#a)')
-						path(fill='#003897', d='M0 0h666.67v480H0z')
-						path(d='M0 186.67h186.67V0h106.67v186.67h373.33v106.67H293.34v186.67H186.67V293.34H0V186.67z', fill='#fff')
-						path(d='M0 213.33h213.33V0h53.333v213.33h400v53.333h-400v213.33H213.33v-213.33H0V213.33z', fill='#d72828')
-		.flag-small
-			div
-				span
-					| アイルランド　Ireland
-				svg(xmlns='http://www.w3.org/2000/svg', viewbox='0 0 640 480')
-					g(fill-rule='evenodd', stroke-width='1pt')
-						path(fill='#fff', d='M0 0h639.995v480.004H0z')
-						path(fill='#009A49', d='M0 0h213.334v480.004H0z')
-						path(fill='#FF7900', d='M426.668 0h213.334v480.004H426.668z')
-		.flag-small
-			div
-				span イタリア　Italy
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					g(fill-rule='evenodd', stroke-width='1pt')
-						path(d='M0 0h640v479.997H0z', fill='#fff')
-						path(d='M0 0h213.331v479.997H0z', fill='#009246')
-						path(d='M426.663 0h213.331v479.997H426.663z', fill='#ce2b37')
-		.flag-small
-			div
-				span ポーランド　Poland
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					g(fill-rule='evenodd')
-						path(d='M640 480H0V0h640z', fill='#fff')
-						path(d='M640 480H0V240h640z', fill='#dc143c')
-		.flag-small
-			div
-				span スロバキア　Slovakia
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					path(d='M0 0h640v480H0z', fill='#ee1c25')
-					path(d='M0 0h640v320H0z', fill='#0b4ea2')
-					path(d='M0 0h640v160H0z', fill='#fff')
-					path(d='M233.004 370.8c-43.025-20.724-104.568-61.858-104.568-143.226 0-81.37 3.89-118.374 3.89-118.374h201.358s3.891 37.005 3.891 118.374c0 81.368-61.543 122.502-104.571 143.226z', fill='#fff')
-					path(d='M233.004 360c-39.472-19.013-95.934-56.75-95.934-131.4 0-74.651 3.57-108.6 3.57-108.6H325.37s3.57 33.95 3.57 108.6c0 74.65-56.462 112.387-95.936 131.4z', fill='#ee1c25')
-					path(d='M241.446 209.027c10.688.173 31.54.591 50.109-5.622 0 0-.49 6.645-.49 14.385 0 7.742.49 14.386.49 14.386-17.032-5.7-38.064-5.819-50.108-5.666v41.231h-16.883V226.51c-12.044-.153-33.076-.034-50.108 5.665 0 0 .49-6.644.49-14.386 0-7.74-.49-14.384-.49-14.384 18.568 6.213 39.42 5.795 50.108 5.622v-25.894c-9.741-.087-23.779.378-39.65 5.69 0 0 .49-6.645.49-14.386 0-7.74-.49-14.385-.49-14.385 15.848 5.303 29.868 5.776 39.607 5.691-.501-16.398-5.278-37.065-5.278-37.065s9.831.767 13.761.767c3.934 0 13.763-.767 13.763-.767s-4.776 20.667-5.277 37.064c9.739.084 23.759-.388 39.606-5.691 0 0-.49 6.644-.49 14.385 0 7.74.49 14.385.49 14.385-15.87-5.311-29.909-5.776-39.65-5.69v25.894z', fill='#fff')
-					path(d='M233 263.275c-19.878 0-30.525 27.575-30.525 27.575s-5.907-13.075-22.125-13.075c-10.973 0-19.06 9.761-24.2 18.8C176.113 328.34 207.964 347.941 233 360c25.039-12.06 56.91-31.657 76.875-63.425-5.14-9.039-13.227-18.8-24.2-18.8-16.219 0-22.15 13.075-22.15 13.075S252.879 263.275 233 263.275z', fill='#0b4ea2')
-		.flag-small
-			div
-				span スペイン　Spain
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					path(d='M0 0h640v480H0z', fill='#c60b1e')
-					path(d='M0 120h640v240H0z', fill='#ffc400')
-		.flag-small
-			div
-				span イギリス　United Kingdom
-				svg(viewbox='0 0 640 480', xmlns='http://www.w3.org/2000/svg')
-					defs
-						clippath#a
-							path(d='M-85.333 0h682.67v512h-682.67z', fill-opacity='.67')
-					g(clip-path='url(#a)', transform='translate(80) scale(.94)')
-						g(stroke-width='1pt')
-							path(d='M-256 0H768.02v512.01H-256z', fill='#006')
-							path(d='M-256 0v57.244l909.535 454.768H768.02V454.77L-141.515 0H-256zM768.02 0v57.243L-141.515 512.01H-256v-57.243L653.535 0H768.02z', fill='#fff')
-							path(d='M170.675 0v512.01h170.67V0h-170.67zM-256 170.67v170.67H768.02V170.67H-256z', fill='#fff')
-							path(d='M-256 204.804v102.402H768.02V204.804H-256zM204.81 0v512.01h102.4V0h-102.4zM-256 512.01L85.34 341.34h76.324l-341.34 170.67H-256zM-256 0L85.34 170.67H9.016L-256 38.164V0zm606.356 170.67L691.696 0h76.324L426.68 170.67h-76.324zM768.02 512.01L426.68 341.34h76.324L768.02 473.848v38.162z', fill='#c00')
-
-
-	.cp-postlinks-container
-		.cp-postlink
-			a(href='https://kozuredeyoroppa.blogspot.de/2013/05/poland-krakow-zalipie.html')
-				span.wrap
-					span.image
-						img( src='https://3.bp.blogspot.com/OQrBwiX1xVrQTVqUfAhESxRm8LRAyNoq3eXYZXU98GDLglfLOYZAl7mm9h672DyAR28zlQMivo-wtK2XB4hXGucMyhMnj6SCPeQJiMv28STeAL9H2trnFugBceOyZ0PerI07dPcU5OavMZs9EbaSm6mt_viyxrbk5uo--brHHeiS7tTJw5EfRPhG9OCa6OCE46N_t_sW3RPsT_1yPbkg_juaZcQfJ0ucbcwNmUG4Q7-4CffJkkiNVCtxDllxDotVaKPPJc9mi35U33Kz0ozjbZXgWlCiWyajUNJN2daEacVwHuzs19gZ41kRedgklg7xhAVPBvE2GIODkwDbX00ehbywtec3S6ij2qBtC04Lc4w2mImPa3CZvtWXuKkChncCjDOcxTOOuBqKoHI7LtAgNAS5U3Qxvkf24M_nV5hqeKmi2IehQm7Fc9bZXZDZILBhCxrVoON0pFDlJD867lZnu-npTVErikKTWeN4W4NO00vLEmIRmbu55QIT4qf5KPe8VzHLiRfgSxrj-kSzMeWv4qYBgNhTG7PvzssZgg0F2QANMWpyZWrVCV7W0JfFSDUEK34QQKwhdlG2dwJirVU8t-IVZdlqffK8HAAQcNAP9C54lU1H=w800-h534-no')
-				span.text
-					span.title ポーランド【クラコフ、ザリピエ】 
-		.cp-postlink
-			a(href='https://kozuredeyoroppa.blogspot.de/2011/11/slovakia-bratislava-czech-republic-prague-cesky-krumlov-germany-dresden-italy-venice.html')
-				span.wrap
-					span.image
-						img( src='https://4.bp.blogspot.com/oS6D39KrnxiR5NSQ9tschB0_9s6HCyuEVy5VlxtgSppO-TmPuAg64dtgXYzlW0_gCfvfV_gVNh0IQH13MEZScyVYv7R0QsbZ7WIBXNlS0wxRc8gpzD0zmejBEBSXChIthKbBTiQbVCsq1YSr5fMEX2uAF68V7R0AjLX5g9SoQ_Tgcg0XeKdMqwYl9-w2czawo9HcgL9OQclkvlVJnTEDPUh_AAwTtKnyzl_ZOD-7Ypnt7UTkcOVQCqiwG1PHMZ1b9cUhqUDZ819sKpmDGaiiQ5OC507REgRAZeSxCfIYPpqcu-fLecEID7s5Y_5StM4ylJ2SNLzTP5RMO7-ANVNd4em6mjvRREujECVB4rjASeF1dUKnQgXTjLF7rTGD9SyB_CTZfe8CNTy-uN9QgwUHVkO8tP_xFoto1iDkS804e9LAano7dn4NiItBBhG2dtm47syNUitN4G6x4A7J0VveFoqJPfBDHIM_IMsmZV6h5U4MabdpAtHxfpzvbfYqls0WCRUcck1xCVsbsLaL_AZngitImHBkolB-zJnBVwr4H_RZACPO_tyP9l8fAyn6nYw1759JyfnKg-CpoODAqpJfCM5EJwBcfj8BX6LUf7MvWm82UKSN=w1804-h1352-no')
-				span.text
-					span.title スロバキア【ブラチスラバ】チェコ【プラハ、チェスキークルムロフ】ドイツ【ドレスデン】イタリア【ヴェネチア)】
-
-	.cp-postlinks-container
-		.cp-postlink
-			a(href='https://kozuredeyoroppa.blogspot.de/2013/05/poland-krakow-zalipie.html')
-				span.wrap
-					span.image
-						svg(xmlns='http://www.w3.org/2000/svg',  viewbox='0 0 640 480')
-							defs
-								clippath#a
-									path(fill-opacity='.67', d='M0 0h640v480H0z')
-							g(fill-rule='evenodd', stroke-width='0', clip-path='url(#a)')
-								path(fill='#003897', d='M0 0h666.67v480H0z')
-								path(d='M0 186.67h186.67V0h106.67v186.67h373.33v106.67H293.34v186.67H186.67V293.34H0V186.67z', fill='#fff')
-								path(d='M0 213.33h213.33V0h53.333v213.33h400v53.333h-400v213.33H213.33v-213.33H0V213.33z', fill='#d72828')
-
-				span.text
-					span.title アイスランド　Iceland 
-		.cp-postlink
-			a(href='https://kozuredeyoroppa.blogspot.de/2011/11/slovakia-bratislava-czech-republic-prague-cesky-krumlov-germany-dresden-italy-venice.html')
-				span.wrap
-					span.image
-						img( src='https://4.bp.blogspot.com/oS6D39KrnxiR5NSQ9tschB0_9s6HCyuEVy5VlxtgSppO-TmPuAg64dtgXYzlW0_gCfvfV_gVNh0IQH13MEZScyVYv7R0QsbZ7WIBXNlS0wxRc8gpzD0zmejBEBSXChIthKbBTiQbVCsq1YSr5fMEX2uAF68V7R0AjLX5g9SoQ_Tgcg0XeKdMqwYl9-w2czawo9HcgL9OQclkvlVJnTEDPUh_AAwTtKnyzl_ZOD-7Ypnt7UTkcOVQCqiwG1PHMZ1b9cUhqUDZ819sKpmDGaiiQ5OC507REgRAZeSxCfIYPpqcu-fLecEID7s5Y_5StM4ylJ2SNLzTP5RMO7-ANVNd4em6mjvRREujECVB4rjASeF1dUKnQgXTjLF7rTGD9SyB_CTZfe8CNTy-uN9QgwUHVkO8tP_xFoto1iDkS804e9LAano7dn4NiItBBhG2dtm47syNUitN4G6x4A7J0VveFoqJPfBDHIM_IMsmZV6h5U4MabdpAtHxfpzvbfYqls0WCRUcck1xCVsbsLaL_AZngitImHBkolB-zJnBVwr4H_RZACPO_tyP9l8fAyn6nYw1759JyfnKg-CpoODAqpJfCM5EJwBcfj8BX6LUf7MvWm82UKSN=w1804-h1352-no' )
-				span.text
-					span.title スロバキア【ブラチスラバ】チェコ【プラハ、チェスキークルムロフ】ドイツ【ドレスデン】イタリア【ヴェネチア)】
+	h1= title
+	div!= html
 	block script-bottom
+		script(src='js/app.js')
