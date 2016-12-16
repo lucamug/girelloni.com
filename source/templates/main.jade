@@ -8,7 +8,13 @@ block content
 	var html = [];
 	var photos = [];
 	for (var i = 0; i < content.length; i++) {
-		var row = content[i];
+		var row;
+		if (Array.isArray(content[i])) {
+			row = content[i][0];
+		} else {
+			row = content[i];
+		}
+		row = "ciao";
 		if (row.match(/^P?\d+$/)) {
 			photos.push(row);
 		}	

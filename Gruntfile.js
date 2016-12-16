@@ -39,21 +39,21 @@ module.exports = function (grunt) {
 					'uglify:dev',
 				],
 				options: {
-					livereload: true
+					//livereload: true
 				},
 			},
 			style: {
 				files: 'source/style/**/*.s?ss',
 				tasks: ['sass:dev', 'usebanner:dev'],
 				options: {
-					livereload: true
+					//livereload: true
 				},
 			},
 			templates: {
 				files: 'source/templates/*.jade',
 				tasks: ['jade:dev'],
 				options: {
-					livereload: true
+					//livereload: true
 				},
 			},
 		},
@@ -108,7 +108,7 @@ module.exports = function (grunt) {
 		connect: {
 			server: {
 				options: {
-					port: 4000,
+					port: 4001,
 					base: '',
 					hostname: '*'
 				}
