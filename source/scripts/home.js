@@ -146,7 +146,7 @@ function flag(countryEn) {
 		].joinHtml());
 	} else if (countryEn === "France") {
 		html.push([
-			"<g fill-rule='evenodd' stroke-width='1pt')>",
+			"<g fill-rule='evenodd' stroke-width='1pt'>",
 				"<path d='M0 0h640v480H0z' fill='#fff'></path>",
 				"<path d='M0 0h213.337v480H0z' fill='#00267f'></path>",
 				"<path d='M426.662 0H640v480H426.662z' fill='#f31830'></path>",
@@ -171,9 +171,9 @@ function flag(countryEn) {
 				"<path d='M0 213.33h213.33V0h53.333v213.33h400v53.333h-400v213.33H213.33v-213.33H0V213.33z' fill='#d72828'></path>",
 			"</g>",
 		].joinHtml());
-	} else if (countryEn === "Irelan") {
+	} else if (countryEn === "Ireland") {
 		html.push([
-			"<g fill-rule='evenodd' stroke-width='1pt')",
+			"<g fill-rule='evenodd' stroke-width='1pt'>",
 				"<path fill='#fff' d='M0 0h639.995v480.004H0z'></path>",
 				"<path fill='#009A49' d='M0 0h213.334v480.004H0z'></path>",
 				"<path fill='#FF7900' d='M426.668 0h213.334v480.004H426.668z'></path>",
@@ -210,14 +210,31 @@ function flag(countryEn) {
 			"<path d='M0 120h640v240H0z' fill='#ffc400'></path>",
 		].joinHtml());
 	} else if (countryEn === "United Kingdom") {
+		/*
+		<svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+		  <defs>
+		    <clipPath id="a">
+		      <path d="M-85.333 0h682.67v512h-682.67z" fill-opacity=".67"></path>
+		    </clipPath>
+		  </defs>
+		  <g clip-path="url(#a)" transform="translate(80) scale(.94)">
+		    <g stroke-width="1pt">
+		      <path d="M-256 0H768.02v512.01H-256z" fill="#006"></path>
+		      <path d="M-256 0v57.244l909.535 454.768H768.02V454.77L-141.515 0H-256zM768.02 0v57.243L-141.515 512.01H-256v-57.243L653.535 0H768.02z" fill="#fff"></path>
+		      <path d="M170.675 0v512.01h170.67V0h-170.67zM-256 170.67v170.67H768.02V170.67H-256z" fill="#fff"></path>
+		      <path d="M-256 204.804v102.402H768.02V204.804H-256zM204.81 0v512.01h102.4V0h-102.4zM-256 512.01L85.34 341.34h76.324l-341.34 170.67H-256zM-256 0L85.34 170.67H9.016L-256 38.164V0zm606.356 170.67L691.696 0h76.324L426.68 170.67h-76.324zM768.02 512.01L426.68 341.34h76.324L768.02 473.848v38.162z" fill="#c00"></path>
+		    </g>
+		  </g>
+		</svg>
+		*/
 		html.push([
 			"<defs>",
-				"<clipPath id='a'>",
+				"<clippath id='a'>",
 					"<path d='M-85.333 0h682.67v512h-682.67z' fill-opacity='.67'></path>",
-				"</clipPath>",
+				"</clippath>",
 			"</defs>",
 			"<g clip-path='url(#a)'  transform='translate(80) scale(.94)'>",
-				"<g stroke-width = '1pt')",
+				"<g stroke-width='1pt'>",
 					"<path d='M-256 0H768.02v512.01H-256z' fill='#006'></path>",
 					"<path d='M-256 0v57.244l909.535 454.768H768.02V454.77L-141.515 0H-256zM768.02 0v57.243L-141.515 512.01H-256v-57.243L653.535 0H768.02z' fill='#fff'></path>",
 					"<path d='M170.675 0v512.01h170.67V0h-170.67zM-256 170.67v170.67H768.02V170.67H-256z' fill='#fff'></path>",
@@ -237,7 +254,7 @@ function flag(countryEn) {
 function flagSmall(country) {
 	return [
 		"<div class='flag-small'>",
-			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}')>",
+			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}'>",
 				"<span>{countryEn}</span>",
 				flag(country.en),
 			"</a>",
@@ -252,7 +269,7 @@ function flagSmall(country) {
 function sectionFlag(country) {
 	return [
 		"<div class='cp-postlink sectionFlag'>",
-			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}'",
+			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}'>",
 				"<span class='wrap'>",
 					"<span class='image'>",
 						flag(country.en),
@@ -276,7 +293,7 @@ function sectionFlag(country) {
 function sectionPost(post) {
 	return [
 		"<div class='cp-postlink sectionPost'>",
-			"<a href={postHref} title={postTitleEn})",
+			"<a href='{postHref}' title='{postTitleEn}'>",
 				"<span class='wrap'>",
 					"<span class='image'>",
 						"<img src='{postImageUrl}'>",
@@ -286,7 +303,7 @@ function sectionPost(post) {
 					"<span class='title'>",
 						post.title,
 					"</span>",
-			"</span>",
+				"</span>",
 			"</a>",
 		"</div>",
 	].joinHtml().supplant({
@@ -318,7 +335,7 @@ for (var i = 0; i < posts.length; i++) {
 }
 
 html.push([
-
+	"<link rel='stylesheet' type='text/css' href='build/development/css/app.css'>",
 	"<h1>cp-flagsmall-container</h1>",
 	"<div class='cp-flagsmall-container'>",
 		htmlFlagSmall.joinHtml(),
