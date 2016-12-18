@@ -14,19 +14,21 @@ block content
 		} else {
 			row = content[i];
 		}
-		row = "ciao";
-		if (row.match(/^P?\d+$/)) {
-			photos.push(row);
+		// row = "ciao";
+		if (row) {
+			if (row.match(/^P?\d+$/)) {
+				photos.push(row);
+			}	
+			if (row.match(/^http/)) {
+				html.push([
+					'<a href="'+row+'" imageanchor="1">',
+						'<img class="picture" src="'+row+'" width="100%" />',
+					'</a>'
+				].join(''));
+			} else {
+				html.push(row + "<br />");
+			}
 		}	
-		if (row.match(/^http/)) {
-			html.push([
-				'<a href="'+content[i]+'" imageanchor="1">',
-					'<img class="picture" src="'+content[i]+'" width="100%" />',
-				'</a>'
-			].join(''));
-		} else {
-			html.push(content[i] + "<br />");
-		}
 	}
 	// console.log(photos.sort());
 	html = html.join('');

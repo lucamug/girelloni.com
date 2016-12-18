@@ -7,10 +7,8 @@
   "author": "Made with ❤ in by lucamug",
   "license": "ISC",
   "data": {
-    "appCommandsModules": [
-    ],
-    "appCreationModules": [
-    ],
+    "appCommandsModules": [],
+    "appCreationModules": [],
     "appModules": [
       "source/scripts/app.js"
     ]
@@ -39,5 +37,7 @@
     "request": "^2.72.0",
     "ssh2": "^0.5.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "google-spreadsheet-to-json": "^0.3.0"
+  }
 }
