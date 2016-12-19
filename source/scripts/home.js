@@ -26,13 +26,33 @@ var countries = [
 	{ en: "United Kingdom", ja: "イギリス" },
 ];
 var japaneseSpace = "　";
-var posts = [
+
+var s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-18T18:28.json');
+var posts = [];
+for (var i = 0; i < s.orderedSheetsTitle.length; i++) {
+	var sheetTitle = s.orderedSheetsTitle[i];
+	var s2 = s.sheets[sheetTitle];
+	var titleJA = s2.B1;
+	var titleEN = s2.C1;
+	var urlJA = s2.B2;
+	var cover = s2.B7;
+	if (urlJA) {
+		// console.log(titleJA, urlJA);
+		posts.push({
+			title: titleJA,
+			titleEn: titleEN,
+			href: urlJA,
+			imageUrl: cover,
+		});
+	}
+}
+
+var posts2 = [
 	{
 		title: "フィンランド【ヘルシンキ】",
 		titleEn: "Finland (Helsinki)",
 		href: "/2010/08/finland-helsinki.html",
 		imageUrl: "https://lh3.googleusercontent.com/pJTmR4Kj39gkTZdd-uLgKIYG9OjtlxJkMQyfFDWaRXPJrizAtMz6p5opaxJfWbIVZBdka8Q57w4wuucJfCb8MKMbUrrLk73-O42djUA2_4pmcphokRBIURU3g56LbYrvxGSPwZX1oC4xXf4UsQJ2NFEEeHNvPgZ-S2_Frt663By4BkvnnnPjqNkfO4hfrsTTd1MfCb9LIEiiAFf7nmIwjzqjhCA-KsHUZJaH6zDJ9n70nQuXNo3UQzIfkvXZBZHqXFn2qVZoL2-72_2zpt1dRFMOW5TEMRu0bgEKARfQEH8jSCAEjxye0hwGY6ye5Qtg0hoDAsdGfYWcb6CIshq4pRbeV-v-JCIlk2gNx8keWsJeWW0VLBgaog76mx-udfS32g6CbU7e43SeDDKBFDTl2Kij494HLkWLjqMqTZ3CZAdWeuccGqHv_T9Y-LOxm7gQBgPT9lSmNgT4AcTpCtOE4izgfbvvZQ3hAvJq-JtQYEF2ad5slNudMTx82NZBN-vdLxUt0GIRAtPrDcAMNERs9eFbQz-t2cNTtofbH3Hf37egtbpRVcVQ4zkwZndMDTz8FjUFDmkE7U1agRAeQJDg9zdXG6SwRytNS71XBPhjT2tklDc=w1600-h1200-no",
-		width: '200%'
 	},
 	{
 		title: "フランス【パリ、ランス】",
@@ -331,7 +351,7 @@ for (var i = 0; i < countries.length; i++) {
 var htmlPosts = [];
 for (var i = 0; i < posts.length; i++) {
 	//console.log(countries[i]);
-	htmlPosts.push(sectionPost(posts[i]));
+	htmlPosts.push(sectionPost(posts[posts.length - 1 - i]));
 }
 
 html.push([
