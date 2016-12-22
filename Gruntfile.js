@@ -60,15 +60,15 @@ module.exports = function (grunt) {
 		jade: {
 			dev: {
 				files: {
-					'build/development/food.html': 'source/templates/food.jade',
-					'build/development/home.html': 'source/templates/home.jade',
-					'build/development/berlin.html': 'source/templates/page.berlin.jade',
-					'build/development/bremerhaven.html': 'source/templates/page.bremerhaven.jade',
-					'build/development/hamburg.html': 'source/templates/page.hamburg.jade',
-					'build/development/iceland.html': 'source/templates/page.iceland.jade',
-					'build/development/krakow.html': 'source/templates/page.krakow.jade',
-					'build/development/sicily.html': 'source/templates/page.sicily.jade',
-					'build/development/warsaw.html': 'source/templates/page.warsaw.jade',
+					// 'build/development/food.html': 'source/templates/food.jade',
+					// 'build/development/home.html': 'source/templates/home.jade',
+					// 'build/development/berlin.html': 'source/templates/page.berlin.jade',
+					// 'build/development/bremerhaven.html': 'source/templates/page.bremerhaven.jade',
+					// 'build/development/hamburg.html': 'source/templates/page.hamburg.jade',
+					// 'build/development/iceland.html': 'source/templates/page.iceland.jade',
+					// 'build/development/krakow.html': 'source/templates/page.krakow.jade',
+					// 'build/development/sicily.html': 'source/templates/page.sicily.jade',
+					// 'build/development/warsaw.html': 'source/templates/page.warsaw.jade',
 				},
 				options: {
 					client: false,
@@ -101,7 +101,7 @@ module.exports = function (grunt) {
 					]
 				},
 				files: {
-					'build/production/css/app.min.css': 'build/development/css/app.css',
+					//'build/production/css/app.min.css': 'build/development/css/app.css',
 				},
 			}
 		},

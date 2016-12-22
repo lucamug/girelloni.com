@@ -1,3 +1,12 @@
+// Commands
+//
+// node source/scripts/home.js
+// node source/scripts/google-spreadsheets-download.js > ./blog.2016-12-20T11:07.json
+
+
+var fs = require('fs');
+var error;
+
 Array.prototype.joinHtml = function () {
 	return this.join('\n');
 };
@@ -12,31 +21,41 @@ String.prototype.supplant = function (o) {
 };
 
 var countries = [
-	{ en: "Austria", ja: "オーストリア" },
-	{ en: "Czech Republic", ja: "チェコ共和国" },
-	{ en: "Finland", ja: "フィンランド" },
-	{ en: "France", ja: "フランス" },
-	{ en: "Germany", ja: "ドイツ" },
-	{ en: "Iceland", ja: "アイスランド" },
-	{ en: "Ireland", ja: "アイルランド" },
-	{ en: "Italy", ja: "イタリア" },
-	{ en: "Poland", ja: "ポーランド" },
-	{ en: "Slovakia", ja: "スロバキア" },
-	{ en: "Spain", ja: "スペイン" },
-	{ en: "United Kingdom", ja: "イギリス" },
+	{ id: "austria", en: "Austria", ja: "オーストリア" },
+	{ id: "czech-republic", en: "Czech Republic", ja: "チェコ共和国" },
+	{ id: "finland", en: "Finland", ja: "フィンランド" },
+	{ id: "france", en: "France", ja: "フランス" },
+	{ id: "germany", en: "Germany", ja: "ドイツ" },
+	{ id: "iceland", en: "Iceland", ja: "アイスランド" },
+	{ id: "ireland", en: "Ireland", ja: "アイルランド" },
+	{ id: "italy", en: "Italy", ja: "イタリア" },
+	{ id: "poland", en: "Poland", ja: "ポーランド" },
+	{ id: "slovakia", en: "Slovakia", ja: "スロバキア" },
+	{ id: "spain", en: "Spain", ja: "スペイン" },
+	{ id: "uk", en: "United Kingdom", ja: "イギリス" },
 ];
 var japaneseSpace = "　";
 
-var s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-18T18:28.json');
+
+
+var s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-20T11:07.json');
 var posts = [];
 for (var i = 0; i < s.orderedSheetsTitle.length; i++) {
 	var sheetTitle = s.orderedSheetsTitle[i];
+	console.log(sheetTitle);
 	var s2 = s.sheets[sheetTitle];
 	var titleJA = s2.B1;
 	var titleEN = s2.C1;
 	var urlJA = s2.B2;
+	var urlEN = s2.C2;
 	var cover = s2.B7;
-	if (urlJA) {
+	if (urlTest(urlJA)) {} else {
+		// console.log(error + ": " + urlJA, sheetTitle);
+	}
+	if (urlTest(urlEN)) {} else {
+		// console.log(error + ": " + urlEN, sheetTitle);
+	}
+	if (urlTest(urlJA)) {
 		// console.log(titleJA, urlJA);
 		posts.push({
 			title: titleJA,
@@ -47,87 +66,42 @@ for (var i = 0; i < s.orderedSheetsTitle.length; i++) {
 	}
 }
 
-var posts2 = [
-	{
-		title: "フィンランド【ヘルシンキ】",
-		titleEn: "Finland (Helsinki)",
-		href: "/2010/08/finland-helsinki.html",
-		imageUrl: "https://lh3.googleusercontent.com/pJTmR4Kj39gkTZdd-uLgKIYG9OjtlxJkMQyfFDWaRXPJrizAtMz6p5opaxJfWbIVZBdka8Q57w4wuucJfCb8MKMbUrrLk73-O42djUA2_4pmcphokRBIURU3g56LbYrvxGSPwZX1oC4xXf4UsQJ2NFEEeHNvPgZ-S2_Frt663By4BkvnnnPjqNkfO4hfrsTTd1MfCb9LIEiiAFf7nmIwjzqjhCA-KsHUZJaH6zDJ9n70nQuXNo3UQzIfkvXZBZHqXFn2qVZoL2-72_2zpt1dRFMOW5TEMRu0bgEKARfQEH8jSCAEjxye0hwGY6ye5Qtg0hoDAsdGfYWcb6CIshq4pRbeV-v-JCIlk2gNx8keWsJeWW0VLBgaog76mx-udfS32g6CbU7e43SeDDKBFDTl2Kij494HLkWLjqMqTZ3CZAdWeuccGqHv_T9Y-LOxm7gQBgPT9lSmNgT4AcTpCtOE4izgfbvvZQ3hAvJq-JtQYEF2ad5slNudMTx82NZBN-vdLxUt0GIRAtPrDcAMNERs9eFbQz-t2cNTtofbH3Hf37egtbpRVcVQ4zkwZndMDTz8FjUFDmkE7U1agRAeQJDg9zdXG6SwRytNS71XBPhjT2tklDc=w1600-h1200-no",
-	},
-	{
-		title: "フランス【パリ、ランス】",
-		titleEn: "France (Paris, Reims)",
-		href: "/2010/10/france-paris-reims.html",
-		imageUrl: "https://i.guim.co.uk/img/static/sys-images/Travel/Pix/gallery/2013/5/9/1368093882563/Eiffel-Tower-Paris-008.jpg?w=620&q=55&auto=format&usm=12&fit=max&s=511355f3b724dcf8d221bf0f273bc854"
-	},
-	{
-		title: "オーストリア【ウィーン】スロバキア【ブラチスラバ】ハンガリー【ブダペスト】",
-		titleEn: "Austria (Vienna) Slovakia (Bratislava), Hungary (Budapest)",
-		href: "/2011/06/austria-vienna-slovakia-bratislava-hungary-budapest.html",
-		imageUrl: "https://lh3.googleusercontent.com/6bh2iGTkbgJSZjhDMj6H5a8pR84vQapm9xOeGvi5FF7sIbar3Fi2AILe_iFVuviqpmU_5fIVKQ47ICFv8wNBHmRNFOPu85qolTjXOTepePCdSGrDf9aZe6cqc--5aYgzUdmvNZY6_PD5MEVRFKU7MBerGkWppaFHQR2_T-dE1aBzHH_zI-6oGkchVjdZ1SfmhLG1dtUzIo3gJPxTX3x7WN8fZjJEPUn8awUFcCFqZtlKtxR9U9Yg69tMdHxz55Z9NK7xEMJ2nqUMylS3HiAyyiAIRGSYh3Bt3BrCX50Yda0Nva2Pbm9fD5mdMeajv-fuOowF7QFCJVF2ztMmB9ltqWOvgvTJCdD8ewVh5MxR5Zf02aNkMfT0Wqrl3VyeqCAC6A1MJk9w0r8y3etdXANHmI3jL5dj1e1YQ2pmvQUxL_PS8Mtr_5BEyvhUzDHwYohpdWkf6T1oTNp14NEctpN396WMQrLEMefHuEh4KLSclvpRw-XrF4_kywgVCXOYNjVr6cfA1RrzKMLXsaUf2Dg8khelVvZgFNeNoPmdBTg1Nbtc_WuhDrRho9rRqlts15XiQtW-KKxFY4phnx9pLaeuz5ymcLuIk40OI0UMiR8QtHq61_-c=w1600-h1065-no"
-	},
-	{
-		title: "スロバキア【ブラチスラバ】チェコ【プラハ、チェスキークルムロフ】ドイツ【ドレスデン】イタリア【ヴェネチア)】",
-		titleEn: "Slovakia (Bratislava), Czech Republic (Prague, Cesky Krumlov), Germany (Dresden), Italy (Venice)",
-		href: "/2011/11/slovakia-bratislava-czech-republic-prague-cesky-krumlov-germany-dresden-italy-venice.html",
-		imageUrl: "https://4.bp.blogspot.com/oS6D39KrnxiR5NSQ9tschB0_9s6HCyuEVy5VlxtgSppO-TmPuAg64dtgXYzlW0_gCfvfV_gVNh0IQH13MEZScyVYv7R0QsbZ7WIBXNlS0wxRc8gpzD0zmejBEBSXChIthKbBTiQbVCsq1YSr5fMEX2uAF68V7R0AjLX5g9SoQ_Tgcg0XeKdMqwYl9-w2czawo9HcgL9OQclkvlVJnTEDPUh_AAwTtKnyzl_ZOD-7Ypnt7UTkcOVQCqiwG1PHMZ1b9cUhqUDZ819sKpmDGaiiQ5OC507REgRAZeSxCfIYPpqcu-fLecEID7s5Y_5StM4ylJ2SNLzTP5RMO7-ANVNd4em6mjvRREujECVB4rjASeF1dUKnQgXTjLF7rTGD9SyB_CTZfe8CNTy-uN9QgwUHVkO8tP_xFoto1iDkS804e9LAano7dn4NiItBBhG2dtm47syNUitN4G6x4A7J0VveFoqJPfBDHIM_IMsmZV6h5U4MabdpAtHxfpzvbfYqls0WCRUcck1xCVsbsLaL_AZngitImHBkolB-zJnBVwr4H_RZACPO_tyP9l8fAyn6nYw1759JyfnKg-CpoODAqpJfCM5EJwBcfj8BX6LUf7MvWm82UKSN=w1804-h1352-no"
-	},
-	{
-		title: "アイスランド【一周】ドイツ【ベルリン、ハンブルグ、リューベック】",
-		titleEn: "Iceland (Roundtrip), Germany (Berlin, Hamburg, Luebeck)",
-		href: "/2012/08/iceland-reykjavik-germany-berlin-hamburg-luebeck.html",
-		imageUrl: "https://lh3.googleusercontent.com/9XRNdfAtTVa9DRTcLuKPMaC9w_j6D7bnnEeuzv4yJszm8YB4Ki8znfB_FH3j2IfyK_cER7x05CJdfgu04PzrfzS354D-d6jR_Ga1CVJHn2nxSVuM1uFwKd30CP65DXuX9wbkqafE4jUBYtfHBNrbyUQ8SvlpSIRCZTHhNLjyju1DSGSmBqWB3oCu9bfSqWNuJkGY07GDAl3zLuVqxGpFfq-Bt8b-g53l2J2q7YJM5ABW0JKWqxEoScinX2b2a2iWlP8x6mItW5TlFQOV3wfwsxFEfUxXAxS-2RLeLykJDp3CUKhcKIC__UgGci7s--Pys0yiwF-JHcshIApoOcLbvzNxAD_2Bv5eHa5jnumadn8Bq6tDYUMFzUvoRmNUuy3TeuuR6nrZCRu7oLXpbE3dFl6BcR1ytZFPZjUeoPCdXpX-RNT6xDCGGP2U4O4_U6nUTtB4ZTuRMN5cvFfS9HYlHMwgSWT9Ls2ZJsgNKu0Q06AR7_61iGSb69gO5G_UBsyq_YPdxtnI43FrmGXr5Ku_VrkzYhZyZzsyVtu1VLksi4JhTyMCddZar4sSLTTAFJe1skfHYs7d2aqmrniynvNlVnPMzGnf0zYTjxptHosQEADIc50g=w1600-h898-no"
-	},
-	{
-		title: "ポーランド【クラコフ、ザリピエ】",
-		titleEn: "Poland (Krakow, Zalipie)",
-		href: "/2013/05/poland-krakow-zalipie.html",
-		imageUrl: "https://3.bp.blogspot.com/OQrBwiX1xVrQTVqUfAhESxRm8LRAyNoq3eXYZXU98GDLglfLOYZAl7mm9h672DyAR28zlQMivo-wtK2XB4hXGucMyhMnj6SCPeQJiMv28STeAL9H2trnFugBceOyZ0PerI07dPcU5OavMZs9EbaSm6mt_viyxrbk5uo--brHHeiS7tTJw5EfRPhG9OCa6OCE46N_t_sW3RPsT_1yPbkg_juaZcQfJ0ucbcwNmUG4Q7-4CffJkkiNVCtxDllxDotVaKPPJc9mi35U33Kz0ozjbZXgWlCiWyajUNJN2daEacVwHuzs19gZ41kRedgklg7xhAVPBvE2GIODkwDbX00ehbywtec3S6ij2qBtC04Lc4w2mImPa3CZvtWXuKkChncCjDOcxTOOuBqKoHI7LtAgNAS5U3Qxvkf24M_nV5hqeKmi2IehQm7Fc9bZXZDZILBhCxrVoON0pFDlJD867lZnu-npTVErikKTWeN4W4NO00vLEmIRmbu55QIT4qf5KPe8VzHLiRfgSxrj-kSzMeWv4qYBgNhTG7PvzssZgg0F2QANMWpyZWrVCV7W0JfFSDUEK34QQKwhdlG2dwJirVU8t-IVZdlqffK8HAAQcNAP9C54lU1H=w800-h534-no"
-	},
-	{
-		title: "スペイン【アンダルシア地方、バレンシア】",
-		titleEn: "Spain (Andalusia, Valencia)",
-		href: "/2013/06/spain-andalusia-valencia.html",
-		imageUrl: "https://lh3.googleusercontent.com/-OQNLqLB6p3xXd8SSYVMavvIUB_KLc07kmQncN_22_yh3O4QxaufOMTEwBzWzysWv4DXJU6qyi8s7XqxtB7MFOljQZp8Y_qbmA2l4fdlfy38X9-OZzKroIevM0qGYnb3ui1a4M7Iqf7Rz7JEB1EnhOI80NnMtVyOW-Woh6hBS6hXpCzN8mln1JyGU3rgtUZ9MGQRQ46TGYb0mU_d6XX8D1KOkUV28gWMrOHbK1dS4xJVNmJLjVHKPHfKWjtAtCP4bwbdh4YHIkNKTB0B-oVqh2GZJQjyp8lsFIzDOTjjzJa422Irlb7O6aYmPckwMgAFlT7cGeKM_iNEvWzo7Peo-jJUzBbiunxOG9JfaJaP1OsEpD3ZgBP9uWph8zLDSGOrgKzxKbgdSrWfWpw1ieEhP57Xd7C_c7tFV_xpAaFJ40fRyBA8rC5VoAUFKzzmb27YQOt_06Ut_dDCHSM4-uSjbYgml3AkFpWqhwkRq2JT9HsklFIpyryoUDfOL-2jfYkrNVbf2WE2o2iAYfnH9R-1NiA9y-plFQlkaoAUjfIacP6o0VNAw8czbizeKCdHzVGv6_sCspmfOd5551VhPUX66tnaJflzBuJX48kMbUcqrupsS-zw=w800-h534-no"
-	},
-	{
-		title: "ドイツ【デュッセルドルフ、ケルン、フランクフルト、ハイデルベルグ、ローテンブルグ、ニュールンベルグ】",
-		titleEn: "Germany (Dusseldorf, Cologne, Frankfurt, Heidelberg, Rothenburg, Nuremberg)",
-		href: "/2013/07/germany-dusseldorf-cologne-frankfurt-heidelberg-rothenburg-nuremberg.html",
-		imageUrl: "https://lh3.googleusercontent.com/W0L1SwBoEl-fkJfzUKWPHjpxw9o_ehdMwmlMnp7sPWLTT7CG6ndwfGcfIbSlUgyHdYQJY096_Z0bG25ZUVOXhLyVciEm4NVxFpyoeYX0Q4DJNP_1Ybluk24LJS1BrExxycX_SQI0OIeQ6imUIuPMkiWXzuwb4lP_J88CExSl4XTgLsOfXdPgzIJ6sBKORQUEw6J_opuqcF0mBS218hq2xcdKeApyGJlpUgby-0fIpiVj60N0oocxLwwoEike9eTaBTbVgB1SgTYDZv_Z-gXP3rkxoKJ7GRQjcW_O94quZDtNfb-8Zsv_Y8GsGQKHJenSfiqMgbK-f6dOUJs0QR_jY9990_6icwtjzsREGfo7_QHTzXIFSkozTo3Q1jJ5I5gQ5p1e6JT8KoYdJKvqEmtI8ODtrK--UIejpI_TRPq7_hilKPaX_nFQSQ53brUTEgSP83PIXOY5qoCc3tqa8Rs3OA-pJlPLM1pP5RrXM_gjeT8quoi-sZ95BECgiVzYNu8UpA6F15WRj6MLu-Q7GsIGeWnmIMDygH6fTTyprJ5GIJ-NOxXK0CT5J8QmpNxdNoV6flXD-9NYbWSLksgOkA9Rto_dMxQPlTkWCEn9MirhRPSfMv1H=w2028-h1352-no"
-	},
-	{
-		title: "ポーランド【ワルシャワ、マズーリ湖水地方、トルン、スヴォヴィンスキ国立公園、グダンスク】",
-		titleEn: "Poland (Warsaw, Mazuri Lake District, Torun, Suvovinsuki National Park, Gdansk)",
-		href: "/2014/07/poland-warsaw-mazuri-lake-district-torun-suvovinsuki-national-park-gdansk.html",
-		imageUrl: "https://lh3.googleusercontent.com/VHybV0FFX7caJK1pvQ34W2EJhn-_GJ5jr8ybV1TVezQoNHFliTEi1mHeVDyU7IDENNiRCMTh6pwPNKUKgiGmTRHThKJOLstcYkSt5YGkeGB0r_ZzwSFRb236Qfrx9sK-r7VNdIhAbtCc1f-6FUQgLn-2c7PFNd0DA14pYdQd5BTj5sksnzYDk3w1TcL4FLDAmQY60lucw-SDIq2xrDgkAcpVIzy6El3eY4DT16_T1P1dYcT_NNukbi1MUhGxWwhbXQljAcV7b5MKDMktopnyQBtcjC2Kr_iKTgbSKoy1jYxtaNX-8SEx0cYyoq8hCxy3NOZ2itoUD5Deh_dgXMVovCWyJReHLzodqCHMEHjXp5HhIMvjhYflma0xy_B7bTMttbmSgjQmA2LUyZKnmTabLEuBRjEHTEJBcBeuE5SEZZGcOGdweawWai5xf8KOcmpVRfnMPWYrRdMR2RHsZpzAOQFAX9WcJ52bngly5iH7HiFwmlP8OET2cc53GOP5UgmiMEC0fsLflyDE4zmiGRXk7QOVHQEtV9QxnIRXSckKBimpggf_Y-2m1CzdYbDbNOruQPmG-KaD_-QawvkG1xy3VjDxJfYcwKSSl9Nsfl6jYNc4aTOg=w2030-h1352-no"
-	},
-	{
-		title: "アイルランド【ダブリン】イギリス【ウエールズ、ブリストル、南部地方】",
-		titleEn: "Ireland (Dublin), United Kingdom (Wales, Bristol, southern region)",
-		href: "/2015/09/ireland-dublin-united-kingdom-wales-bristol-stonehenge.html",
-		imageUrl: "https://lh3.googleusercontent.com/e5e_JsJLJ25OagY2QsUAXGKLppYTb_CAb0pyZJtxRH4cvxaBU3xTbfEFp51H-hDM9Nvaxdgu1vCPdJ5VWfhyezKUGZLO0HSIkd_x6VsdF9n-Wi2fH9omuYdPnuaj1miyibp0cF8Y-ZselRessTJQ07-qMkF5SQHorO3vltvb39ekcE7VkS0o22BRSNTHHKQ3euSy9u-JLicgycMrp1ZV_4xwp7KeyU0ZmypOByOJg6tcQf6v2kKp_jCoZzHJLsBnhchXc-YoFc61bwY7WRcwAg9xpK63Qfj-kxWbmcJj68iHnSjBYldBIqH-I4j6-iG5x2nzmxTW904XMw0OUZWWjguQ4qDTVcs96w4AdbemNFHw5EJCsB95xWx5uQlLJsuACl59Z-OMHekf1nU1Hb1ReJ640d4DxZ3bfok-b51dJuXdwcpazXI-f7TQWBJIXSUK8ey6EIMRuglpNUNsTtYms62noGZwxrEB87i0r2JWiWdTElGNA_sSEat2Un6kEKdopq0UZCfdEWW3bAK78UZ6Cv08F7By8KM8Ie68xBt2NFvqALD5W18jAGnRBK4bSxAITA_9CWck4eiJsCKDBmn7C389PYPWptmyDLet7cBOjnTGmgBR=w2028-h1352-no"
-	},
-	{
-		title: "ドイツ【ヴィッテンベルグ】",
-		titleEn: "Germany (Wittenberg)",
-		href: "/2016/06/germany-wittenberg.html",
-		imageUrl: "https://lh3.googleusercontent.com/7cOPuLxcaQIjN_NRQxfHpVHeFykBPiFdvvyhUOHiZ_STRrlqkkufQ9Opn6yTe7UjMubs7R2ux5sZSWDKLE4VXqJL6_WyIRK_01XkfAS0drrYMYzl3ChJWEHT8svMqwbC5w8ZEMtx0co5ofx1yr8-oX4nxfDzyja_1ngYYioFGsRIQlOdwPXW7_DsxGPBobnCtMok20A-4qyHHoZi4RnTH__sdAqUU8CiWlxAoNHLoLlwrl2ohAAr8Hml7SIKksTcBAweP3HyEvza6CoDrst-FAV8xPWA6JEPX2Qfq2V6oox0RrSO8oH9CONbYNSzcHx8ja048xLLgJ43PWiZgK-Z6f--sveYtyISCg0kGFUFhIqHynjTXTEWwNEaho55KotakNOQNzpxgWXXGsGXGO4ykdNeoz3fsjhC6Y_2W2yLXwD9WSIEgq2e23yljKHIP4iYSSnepOtesPGWlZdqJmyrmL6bsEOWHkvevReGV3A0UscT9be_zEBS_pyRw7xJt-OjcsU7l1ll0hgbVkZQH5ooyqb3yBnZzLYJszs-bV7UY-_H8r2EP5nb3OBFn16QAXaipnBBgGBGwdhEPA7dKJly0x24Jk3zut_cSJu0FxYM_iEoQ-GYKQ=w1804-h1352-no"
-	},
-	{
-		title: "ドイツ【 ワッデン海、ブレーマーハーフェン】",
-		titleEn: "Germany (Wadden Sea, Bremerhaven)",
-		href: "/2016/07/germany-wadden-sea-bremerhaven.html",
-		imageUrl: "https://lh3.googleusercontent.com/yjKIn_VtshkluwP8Jaws5knv5KInprlEDgdBI-6_OJutGcHHWxrps5FvqAB0NPj7r9stDM4FmdAM_an9uhlWHBq3NIXIIbrsw_RHEB278F5x9lc_LlfqU9tu9FX-w6M3YvHyxqhnCO7QUZr4D1ygsHwkf-dMvEzCP413_h4aqjui6udCNTze145CrFQfKIaUhGPLDl2eOyWttf9xFS_vMo8OzGeFe2lnUIf3XTwP0krGEqHIaTdUgEv1SC90w8KzjbSf782BR2TWVdhFleITbGYHrEFq_9CurTh6oF6XR8B7Gxq1Fz7qfXHyDV_am7_4ntEPc25a5dLnkTpqdWR4Cz3TReKTjW3t-z86gyD6QGBzisYvp3HhzTUOaVW3UNHIRCjQtDHR_u1Ryi-AYBUKE4CxWTfbJAYk70Ht8u3MfDfsihkF4OAe8NjOA1Zm_Gl1yUK0HIo_-iKN2cMfZexejU-dLrd-aBjPEBZFLCJe8xuKTz4ZRjTIv1_En0ZeAdl88N9FEswrMaQjuPYMIHiCZwzYNRjQJ0OWKUTnn-BOfkLtnKJRm4co8fRllL4ZjFNCduVvm8kdvgcIstLiRPimtu29xYZ4CxOhFJL0JTAjIFWPtVCItQ=w2028-h1352-no"
-	},
-	{
-		title: "イタリア【シチリア島】",
-		titleEn: "Italy (Sicily)",
-		href: "/2016/11/italy-sicily.html",
-		imageUrl: "https://lh3.googleusercontent.com/JgKuV7Q4oGs6fIDKwxP-M0MD4HQaauOdW5IT6tclx4I9qayxDexKFlezp8Z6UfukvYxr0lD6OUmYp8VEfMaqlMVQSttBjGTGKtDsQDVzxeYgn1ba2GxTy4Dt_AHyfTs89CEx2ppOkNJuZZV28u_NaHVspOV4vm2h5gWhUsgbcq6cNYBi1E9059Yq8mVkmjEpWXZvcG6WyapjYn2yKJI_SedGC43mcoKU-UMNB6mAS0J3auNWRTzuz7nwgGPd4B56x0NECIDUpxRDJ6pvQ5Kj19LmaNNlFI0KaS6oWghWDadZoaSGGTbEDA9yNe9Nz3b9LkytjJjeXnqVhtBQEgDnO17jmj9LHw22VbE3-iy91VKwQDz1bCL5hwd6ogwsBflVD54nED3L_7uV2lwIRZ6EiUYGPqSy5ekooLHLasfqTWje19dPIcModCKBX8xzJm3HzU1Icp5T6nHBDTwNoZ3nKLD4Ywz3DUv8DiWOathEeLN8rblPVuDv3unqOLd4-8cqifBq7EvaSjWlnhSD3VX_PQ5vxQcq4fyt_5Z_HO7X7kYpMTDU333OEw51PEyoCOXPUfMxmSY1sOZD6mirckUYXTqiedLl-o96RLxxQQHcp1qU_rPMKA=w957-h638-no",
-		width: '200%'
-	},
-];
+function countryExist(country) {
+	var i;
+	for (i = 0; i < countries.length; i++) {
+		//console.log(countries[i]);
+		if (country === countries[i].id) {
+			return countries[i];
+		}
+	}
+	return false;
+}
+
+function urlTest(url) {
+	var split;
+	if (url) {
+		if ((split = url.match(/.*(\d{4})\/(\d{2})\/([^/.]+)\.([^/.]+)\.(en|ja)\.html$/))) {
+			if (countryExist(split[4])) {
+				return {
+					year: split[1],
+					month: split[2],
+					location: split[3],
+					conutry: split[4],
+					language: split[5]
+				};
+			} else {
+				error = "Wrong country: " + split[4];
+				return false
+			}
+		} else {
+			error = "Wrong url";
+			return false;
+		}
+	} else {
+		error = "Missing url";
+		return false;
+	}
+}
 
 function flag(countryEn) {
 	var html = [];
@@ -333,44 +307,56 @@ function sectionPost(post) {
 	});
 }
 
-var html = [],
-	i;
 
-var htmlFlagSmall = [];
-for (var i = 0; i < countries.length; i++) {
-	//console.log(countries[i]);
-	htmlFlagSmall.push(flagSmall(countries[i]));
+function createCommonStuff() {
+	var html = [],
+		i;
+
+	var htmlFlagSmall = [];
+	for (i = 0; i < countries.length; i++) {
+		//console.log(countries[i]);
+		htmlFlagSmall.push(flagSmall(countries[i]));
+	}
+
+	var htmlFlagLarge = [];
+	for (i = 0; i < countries.length; i++) {
+		//console.log(countries[i]);
+		htmlFlagLarge.push(sectionFlag(countries[i]));
+	}
+
+	var htmlPosts = [];
+	for (i = 0; i < posts.length; i++) {
+		//console.log(countries[i]);
+		htmlPosts.push(sectionPost(posts[posts.length - 1 - i]));
+	}
+
+	html.push([
+		"<link rel='stylesheet' type='text/css' href='css/app.css'>",
+		"<h1>cp-flagsmall-container</h1>",
+		"<div class='cp-flagsmall-container'>",
+			htmlFlagSmall.joinHtml(),
+		"</div>",
+		"<h1>cp-postlinks-container</h1>",
+		"<div class='cp-postlinks-container'>",
+			htmlFlagLarge.joinHtml(),
+		"</div>",
+		"<h1>cp-postlinks-container</h1>",
+		"<div class='cp-postlinks-container'>",
+			htmlPosts.joinHtml(),
+		"</div>",
+	].joinHtml());
+
+	var destination = "./build/development/commonStuff.html";
+	fs.writeFile(destination, html.joinHtml(), function (err) {
+		if (err) {
+			return console.log(err);
+		}
+		console.log("The file " + destination + " has been saved!");
+	});
 }
 
-var htmlFlagLarge = [];
-for (var i = 0; i < countries.length; i++) {
-	//console.log(countries[i]);
-	htmlFlagLarge.push(sectionFlag(countries[i]));
-}
+createCommonStuff();
 
-var htmlPosts = [];
-for (var i = 0; i < posts.length; i++) {
-	//console.log(countries[i]);
-	htmlPosts.push(sectionPost(posts[posts.length - 1 - i]));
-}
-
-html.push([
-	"<link rel='stylesheet' type='text/css' href='build/development/css/app.css'>",
-	"<h1>cp-flagsmall-container</h1>",
-	"<div class='cp-flagsmall-container'>",
-		htmlFlagSmall.joinHtml(),
-	"</div>",
-	"<h1>cp-postlinks-container</h1>",
-	"<div class='cp-postlinks-container'>",
-		htmlFlagLarge.joinHtml(),
-	"</div>",
-	"<h1>cp-postlinks-container</h1>",
-	"<div class='cp-postlinks-container'>",
-		htmlPosts.joinHtml(),
-	"</div>",
-].joinHtml());
-
-console.log(html.joinHtml());
 
 /*
 
