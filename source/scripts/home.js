@@ -2,10 +2,7 @@
 //
 // node source/scripts/home.js
 // node source/scripts/google-spreadsheets-download.js > ./blog.2016-12-20T11:07.json
-
-
-var fs = require('fs');
-var error;
+//
 
 Array.prototype.joinHtml = function () {
 	return this.join('\n');
@@ -20,87 +17,216 @@ String.prototype.supplant = function (o) {
 	);
 };
 
-var countries = [
-	{ id: "austria", en: "Austria", ja: "オーストリア" },
-	{ id: "czech-republic", en: "Czech Republic", ja: "チェコ共和国" },
-	{ id: "finland", en: "Finland", ja: "フィンランド" },
-	{ id: "france", en: "France", ja: "フランス" },
-	{ id: "germany", en: "Germany", ja: "ドイツ" },
-	{ id: "iceland", en: "Iceland", ja: "アイスランド" },
-	{ id: "ireland", en: "Ireland", ja: "アイルランド" },
-	{ id: "italy", en: "Italy", ja: "イタリア" },
-	{ id: "poland", en: "Poland", ja: "ポーランド" },
-	{ id: "slovakia", en: "Slovakia", ja: "スロバキア" },
-	{ id: "spain", en: "Spain", ja: "スペイン" },
-	{ id: "uk", en: "United Kingdom", ja: "イギリス" },
-];
-var japaneseSpace = "　";
+var fs = require('fs'),
+	// error,
+	japaneseSpace = "　",
+	s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-21T00:00.json'),
+	posts = [],
+	allData = {},
+	i, j,
+	destinationFolder = "./build/development/";
 
+createObject(s.sheets.Data, 'countries', "A", "BC", allData);
+createObject(s.sheets.Data, 'locations', "D", "EFGH", allData);
+createObject(s.sheets.Data, 'trips', "I", "JKLM", allData);
+createObject(s.sheets.Posts, 'posts', "A", "BCDEFGHIJKLMNOPQ", allData);
+createCommonStuff();
+createPosts();
 
+// console.log(allData.ordered.posts);
 
-var s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-20T11:07.json');
-var posts = [];
-for (var i = 0; i < s.orderedSheetsTitle.length; i++) {
-	var sheetTitle = s.orderedSheetsTitle[i];
-	console.log(sheetTitle);
-	var s2 = s.sheets[sheetTitle];
-	var titleJA = s2.B1;
-	var titleEN = s2.C1;
-	var urlJA = s2.B2;
-	var urlEN = s2.C2;
-	var cover = s2.B7;
-	if (urlTest(urlJA)) {} else {
-		// console.log(error + ": " + urlJA, sheetTitle);
-	}
-	if (urlTest(urlEN)) {} else {
-		// console.log(error + ": " + urlEN, sheetTitle);
-	}
-	if (urlTest(urlJA)) {
-		// console.log(titleJA, urlJA);
-		posts.push({
-			title: titleJA,
-			titleEn: titleEN,
-			href: urlJA,
-			imageUrl: cover,
-		});
+function error(err) {
+	if (err) {
+		return console.log(err);
 	}
 }
 
-function countryExist(country) {
-	var i;
+function createPosts() {
+	var imageFound,
+		header, htmlJA, htmlEN, postID, postData, fileNameJA, fileNameEN, postContent;
+	for (i = 0; i < allData.ordered.posts.length; i++) {
+		imageFound = false;
+		htmlJA = [];
+		htmlEN = [];
+		postID = allData.ordered.posts[i];
+		postData = allData.posts[postID];
+		postContent = s.sheets[postID];
+		fileNameJA = urlToFilename(postData['Link JA']);
+		fileNameEN = urlToFilename(postData['Link EN']);
+		header = [
+			'<!-- postID: ' + postID + ' -->',
+			'<!-- postData: ',
+				JSON.stringify(postData, null, '\t'),
+				// JSON.stringify(postContent, null, '\t'),
+			'-->',
+		].joinHtml('\n');
+		htmlJA.push(header);
+		htmlEN.push(header);
+		if (postContent) {
+			for (j = 2; j < 100; j++) {
+				if (postContent["B" + j]) {
+					if (postContent["B" + j].match(/^http/)) {
+						if (!imageFound) {
+							imageFound = true;
+							htmlJA.push("<!--more-->");
+							htmlEN.push("<!--more-->");
+						}
+						// Need to add 
+					} else {
+						htmlJA.push(postContent["B" + j] + "<br><br>");
+						htmlEN.push(postContent["C" + j] + "<br><br>");
+					}
+				}
+			}
+		}
+		console.log(postData.Ready);
+		if (postData.Ready === "Yes") {
+			fs.writeFile(destinationFolder + fileNameJA, htmlJA.joinHtml(), error);
+			fs.writeFile(destinationFolder + fileNameEN, htmlEN.joinHtml(), error);
+		}
+	}
+}
+
+function urlToFilename(url) {
+	url = url.replace(/^http.?:\/\/[^/]*\//, '');
+	url = url.replace(/\//g, '.');
+	return url;
+}
+
+function createCommonStuff() {
+	var html = [],
+		i,
+		htmlFlagSmall = [],
+		countries = allData.ordered.countries;
+
+	for (i = 0; i < countries.length; i++) {
+		htmlFlagSmall.push(flagSmall(
+			allData.countries[countries[i]]['Countries EN'],
+			allData.countries[countries[i]]['Countries JA']
+		));
+	}
+
+	var htmlFlagLarge = [];
 	for (i = 0; i < countries.length; i++) {
 		//console.log(countries[i]);
-		if (country === countries[i].id) {
-			return countries[i];
-		}
+		htmlFlagLarge.push(sectionFlag(
+			allData.countries[countries[i]]['Countries EN'],
+			allData.countries[countries[i]]['Countries JA']
+		));
 	}
-	return false;
+
+	var htmlPosts = [];
+	for (i = 0; i < posts.length; i++) {
+		//console.log(countries[i]);
+		htmlPosts.push(sectionPost(posts[posts.length - 1 - i]));
+	}
+
+	html.push([
+		"<link rel='stylesheet' type='text/css' href='css/app.css'>",
+		"<h1>cp-flagsmall-container</h1>",
+		"<div class='cp-flagsmall-container'>",
+			htmlFlagSmall.joinHtml(),
+		"</div>",
+		"<h1>cp-postlinks-container</h1>",
+		"<div class='cp-postlinks-container'>",
+			htmlFlagLarge.joinHtml(),
+		"</div>",
+		"<h1>cp-postlinks-container</h1>",
+		"<div class='cp-postlinks-container'>",
+			htmlPosts.joinHtml(),
+		"</div>",
+	].joinHtml());
+
+	var destination = "./build/development/commonStuff.html";
+	fs.writeFile(destination, html.joinHtml(), function (err) {
+		if (err) {
+			return console.log(err);
+		}
+		console.log("The file " + destination + " has been saved!");
+	});
 }
 
-function urlTest(url) {
-	var split;
-	if (url) {
-		if ((split = url.match(/.*(\d{4})\/(\d{2})\/([^/.]+)\.([^/.]+)\.(en|ja)\.html$/))) {
-			if (countryExist(split[4])) {
-				return {
-					year: split[1],
-					month: split[2],
-					location: split[3],
-					conutry: split[4],
-					language: split[5]
-				};
-			} else {
-				error = "Wrong country: " + split[4];
-				return false
+function flagSmall(countryEn, countryJa) {
+	return [
+		"<div class='flag-small'>",
+			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}'>",
+				"<span>{countryEn}</span>",
+				flag(countryEn),
+			"</a>",
+		"</div>",
+	].joinHtml().supplant({
+		countryEn: countryEn,
+		countryJa: countryJa,
+		japaneseSpace: japaneseSpace
+	});
+}
+
+function sectionFlag(countryEn, countryJa) {
+	return [
+		"<div class='cp-postlink sectionFlag'>",
+			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}'>",
+				"<span class='wrap'>",
+					"<span class='image'>",
+						flag(countryEn),
+					"</span>",
+				"</span>",
+				"<span class='text'>",
+					"<span class='title'>",
+						"{countryJa}{japaneseSpace}{countryEn}",
+					"</span>",
+				"</span>",
+			"</a>",
+		"</div>",
+	].joinHtml().supplant({
+		countryEn: countryEn,
+		countryJa: countryJa,
+		japaneseSpace: japaneseSpace
+	});
+}
+
+function sectionPost(post) {
+	return [
+		"<div class='cp-postlink sectionPost'>",
+			"<a href='{postHref}' title='{postTitleEn}'>",
+				"<span class='wrap'>",
+					"<span class='image'>",
+						"<img src='{postImageUrl}'>",
+					"</span>",
+				"</span>",
+				"<span class='text'>",
+					"<span class='title'>",
+						post.title,
+					"</span>",
+				"</span>",
+			"</a>",
+		"</div>",
+	].joinHtml().supplant({
+		postHref: post.href,
+		postTitleEn: post.titleEn,
+		postImageUrl: post.imageUrl,
+	});
+}
+
+function createObject(data, type, strID, str, r) {
+	var ID, i, char;
+	r = r || {};
+	r[type] = r[type] || {};
+	r.ordered = r.ordered || {};
+	r.ordered[type] = r.ordered[type] || [];
+	for (i = 2; i < 100; i++) {
+		ID = data[strID + i];
+		if (ID) {
+			r.ordered[type].push(ID);
+			r[type][ID] = r[type][ID] || {};
+			// str = "BCDEFGHIJKLMNOPQ";
+			for (j = 0; j < str.length; j++) {
+				char = str.charAt(j);
+				r[type][ID][data[char + 1]] = data[char + i];
 			}
-		} else {
-			error = "Wrong url";
-			return false;
 		}
-	} else {
-		error = "Missing url";
-		return false;
+		//}
 	}
+	return r;
 }
 
 function flag(countryEn) {
@@ -110,6 +236,14 @@ function flag(countryEn) {
 			"<g fill-rule='evenodd'>",
 				"<path d='M640 480H0V0h640z' fill='#fff'></path>",
 				"<path d='M640 480H0V319.997h640zm0-319.875H0V.122h640z' fill='#df0000'></path>",
+			"</g>",
+		].joinHtml());
+	} else if (countryEn === "Hungary") {
+		html.push([
+			"<g fill-rule='evenodd'>",
+				"<path fill='#fff' d='M640.006 479.994H0V0h640.006z'/>",
+				"<path fill='#388d00' d='M640.006 479.994H0V319.996h640.006z'/>",
+				"<path fill='#d43516' d='M640.006 160.127H0V.13h640.006z'/>",
 			"</g>",
 		].joinHtml());
 	} else if (countryEn === "Czech Republic") {
@@ -204,23 +338,6 @@ function flag(countryEn) {
 			"<path d='M0 120h640v240H0z' fill='#ffc400'></path>",
 		].joinHtml());
 	} else if (countryEn === "United Kingdom") {
-		/*
-		<svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
-		  <defs>
-		    <clipPath id="a">
-		      <path d="M-85.333 0h682.67v512h-682.67z" fill-opacity=".67"></path>
-		    </clipPath>
-		  </defs>
-		  <g clip-path="url(#a)" transform="translate(80) scale(.94)">
-		    <g stroke-width="1pt">
-		      <path d="M-256 0H768.02v512.01H-256z" fill="#006"></path>
-		      <path d="M-256 0v57.244l909.535 454.768H768.02V454.77L-141.515 0H-256zM768.02 0v57.243L-141.515 512.01H-256v-57.243L653.535 0H768.02z" fill="#fff"></path>
-		      <path d="M170.675 0v512.01h170.67V0h-170.67zM-256 170.67v170.67H768.02V170.67H-256z" fill="#fff"></path>
-		      <path d="M-256 204.804v102.402H768.02V204.804H-256zM204.81 0v512.01h102.4V0h-102.4zM-256 512.01L85.34 341.34h76.324l-341.34 170.67H-256zM-256 0L85.34 170.67H9.016L-256 38.164V0zm606.356 170.67L691.696 0h76.324L426.68 170.67h-76.324zM768.02 512.01L426.68 341.34h76.324L768.02 473.848v38.162z" fill="#c00"></path>
-		    </g>
-		  </g>
-		</svg>
-		*/
 		html.push([
 			"<defs>",
 				"<clippath id='a'>",
@@ -243,120 +360,6 @@ function flag(countryEn) {
 		"</svg>",
 	].joinHtml();
 }
-
-
-function flagSmall(country) {
-	return [
-		"<div class='flag-small'>",
-			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}'>",
-				"<span>{countryEn}</span>",
-				flag(country.en),
-			"</a>",
-		"</div>",
-	].joinHtml().supplant({
-		countryEn: country.en,
-		countryJa: country.ja,
-		japaneseSpace: japaneseSpace
-	});
-}
-
-function sectionFlag(country) {
-	return [
-		"<div class='cp-postlink sectionFlag'>",
-			"<a href='/search/label/{countryEn}' title='{countryJa}{japaneseSpace}{countryEn}'>",
-				"<span class='wrap'>",
-					"<span class='image'>",
-						flag(country.en),
-					"</span>",
-				"</span>",
-				"<span class='text'>",
-					"<span class='title'>",
-						"{countryJa}{japaneseSpace}{countryEn}",
-					"</span>",
-				"</span>",
-			"</a>",
-		"</div>",
-	].joinHtml().supplant({
-		countryEn: country.en,
-		countryJa: country.ja,
-		japaneseSpace: japaneseSpace
-	});
-}
-
-
-function sectionPost(post) {
-	return [
-		"<div class='cp-postlink sectionPost'>",
-			"<a href='{postHref}' title='{postTitleEn}'>",
-				"<span class='wrap'>",
-					"<span class='image'>",
-						"<img src='{postImageUrl}'>",
-					"</span>",
-				"</span>",
-				"<span class='text'>",
-					"<span class='title'>",
-						post.title,
-					"</span>",
-				"</span>",
-			"</a>",
-		"</div>",
-	].joinHtml().supplant({
-		postHref: post.href,
-		postTitleEn: post.titleEn,
-		postImageUrl: post.imageUrl,
-	});
-}
-
-
-function createCommonStuff() {
-	var html = [],
-		i;
-
-	var htmlFlagSmall = [];
-	for (i = 0; i < countries.length; i++) {
-		//console.log(countries[i]);
-		htmlFlagSmall.push(flagSmall(countries[i]));
-	}
-
-	var htmlFlagLarge = [];
-	for (i = 0; i < countries.length; i++) {
-		//console.log(countries[i]);
-		htmlFlagLarge.push(sectionFlag(countries[i]));
-	}
-
-	var htmlPosts = [];
-	for (i = 0; i < posts.length; i++) {
-		//console.log(countries[i]);
-		htmlPosts.push(sectionPost(posts[posts.length - 1 - i]));
-	}
-
-	html.push([
-		"<link rel='stylesheet' type='text/css' href='css/app.css'>",
-		"<h1>cp-flagsmall-container</h1>",
-		"<div class='cp-flagsmall-container'>",
-			htmlFlagSmall.joinHtml(),
-		"</div>",
-		"<h1>cp-postlinks-container</h1>",
-		"<div class='cp-postlinks-container'>",
-			htmlFlagLarge.joinHtml(),
-		"</div>",
-		"<h1>cp-postlinks-container</h1>",
-		"<div class='cp-postlinks-container'>",
-			htmlPosts.joinHtml(),
-		"</div>",
-	].joinHtml());
-
-	var destination = "./build/development/commonStuff.html";
-	fs.writeFile(destination, html.joinHtml(), function (err) {
-		if (err) {
-			return console.log(err);
-		}
-		console.log("The file " + destination + " has been saved!");
-	});
-}
-
-createCommonStuff();
-
 
 /*
 
