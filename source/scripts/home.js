@@ -3,6 +3,31 @@
 // node source/scripts/home.js
 // node source/scripts/google-spreadsheets-download.js > ./blog.2016-12-20T11:07.json
 //
+// css goes into https://www.blogger.com/template-editor.g?blogID=3237061565949672219
+//
+// １２３４５６７８９０
+/*
+
+OLD LINKS
+
+http://www.kozuredeyoroppa.com/2016/11/italy-sicily.JA.html
+http://www.kozuredeyoroppa.com/2016/11/italy-sicily.EN.html
+http://www.kozuredeyoroppa.com/2016/07/germany-wadden-sea-bremerhaven.JA.html
+http://www.kozuredeyoroppa.com/2016/06/germany-wittenberg.html
+http://www.kozuredeyoroppa.com/2015/09/ireland-dublin-united-kingdom-wales-bristol-stonehenge.html
+http://www.kozuredeyoroppa.com/2014/07/poland-warsaw-mazuri-lake-district-torun-suvovinsuki-national-park-gdansk.html
+http://www.kozuredeyoroppa.com/2013/07/germany-dusseldorf-cologne-frankfurt-heidelberg-rothenburg-nuremberg.html
+http://www.kozuredeyoroppa.com/2013/06/spain-andalusia-valencia.html
+http://www.kozuredeyoroppa.com/2013/05/poland-krakow-zalipie.html
+http://www.kozuredeyoroppa.com/2012/08/iceland-reykjavik-germany-berlin-hamburg-luebeck.html
+http://www.kozuredeyoroppa.com/2011/11/slovakia-bratislava-czech-republic-prague-cesky-krumlov-germany-dresden-italy-venice.html
+http://www.kozuredeyoroppa.com/2011/06/austria-vienna-slovakia-bratislava-hungary-budapest.html
+http://www.kozuredeyoroppa.com/2010/10/france-paris-reims.html
+http://www.kozuredeyoroppa.com/2010/08/finland-helsinki.html
+*/
+
+var version = "0.14";
+var readyForCopyandPaste = true;
 
 Array.prototype.joinHtml = function () {
 	return this.join('\n');
@@ -17,10 +42,19 @@ String.prototype.supplant = function (o) {
 	);
 };
 
+Number.prototype.pad = function (width, z) {
+	z = z || '0';
+	var n = this + '';
+	width = width || n.length;
+	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+};
+
 var fs = require('fs'),
 	// error,
 	japaneseSpace = "　",
-	s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-21T00:00.json'),
+	japaneseComma = "、",
+	japaneseDot = "。",
+	s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-25T00:00.json'),
 	posts = [],
 	allData = {},
 	i, j,
@@ -28,12 +62,90 @@ var fs = require('fs'),
 
 createObject(s.sheets.Data, 'countries', "A", "BC", allData);
 createObject(s.sheets.Data, 'locations', "D", "EFGH", allData);
-createObject(s.sheets.Data, 'trips', "I", "JKLM", allData);
+createObject(s.sheets.Data, 'trips', "I", "JKLMNO", allData);
 createObject(s.sheets.Posts, 'posts', "A", "BCDEFGHIJKLMNOPQ", allData);
+createPostsByTrips();
+createTitlesAndKeywords();
 createCommonStuff();
 createPosts();
 
+// console.log(allData.titles);
+// console.log(allData.trips);
 // console.log(allData.ordered.posts);
+
+function createTitlesAndKeywords() {
+	var postID, postData, i, j, t = {},
+		k = {},
+		posts = allData.ordered.posts,
+		titleJA, titleEN;
+	for (i = 0; i < posts.length; i++) {
+		titleEN = [];
+		titleJA = [];
+		postID = posts[i];
+		postData = allData.posts[postID];
+
+		// console.log(postData.Location1);
+		if (postData.Location1) {
+			titleJA.push(allData.locations[postData.Location1].JA);
+			titleEN.push(allData.locations[postData.Location1].EN);
+		}
+		if (postData.Location2) {
+			titleJA.push(allData.locations[postData.Location2].JA);
+			titleEN.push(allData.locations[postData.Location2].EN);
+		}
+		if (postData.Location3) {
+			titleJA.push(allData.locations[postData.Location3].JA);
+			titleEN.push(allData.locations[postData.Location3].EN);
+		}
+
+		t[postID] = {};
+		t[postID].EN = titleEN.join(", ") + " (" + allData.countries[postData.Country].EN + ")";
+		t[postID].JA = titleJA.join(japaneseComma) + "【" + allData.countries[postData.Country].JA + "】";
+
+		k[postID] = {};
+		k[postID].EN = titleEN.join(",") + "," + allData.countries[postData.Country].EN;
+		k[postID].JA = titleJA.join(",") + "," + allData.countries[postData.Country].JA;
+
+		if (postData.Keywords) {
+			var keywords = postData.Keywords.split(/\s*,\s*/);
+			for (j = 0; j < keywords.length; j++) {
+				k[postID].EN += "," + allData.locations[keywords[j]].EN;
+				k[postID].JA += "," + allData.locations[keywords[j]].JA;
+				// console.log(allData.locations[keywords[j]]);
+			}
+		}
+		// console.log(titleJA);
+	}
+	allData.titles = t;
+	allData.keywords = k;
+}
+
+function fromKeywordsToHtml(keywords, joiner) {
+	// http://www.kozuredeyoroppa.com/search/label/
+	var k = keywords.split(/\s*,\s*/);
+	// console.log(k);
+	var html = [];
+	var i;
+	for (i = 0; i < k.length; i++) {
+		html.push("<a href='/search/label/" + k[i] + "'>" + k[i] + "</a>");
+	}
+	return html.join(joiner);
+}
+
+function createPostsByTrips() {
+	var postID, postData, tripID, i, r = {},
+		posts = allData.ordered.posts;
+	for (i = 0; i < posts.length; i++) {
+		postID = posts[i];
+		postData = allData.posts[postID];
+		tripID = postData.Trip;
+		if (tripID) {
+			r[tripID] = r[tripID] || [];
+			r[tripID].push(postID);
+		}
+	}
+	allData.postsByTrips = r;
+}
 
 function error(err) {
 	if (err) {
@@ -42,8 +154,8 @@ function error(err) {
 }
 
 function createPosts() {
-	var imageFound,
-		header, htmlJA, htmlEN, postID, postData, fileNameJA, fileNameEN, postContent;
+	var counter = 1,
+		imageFound, tripID, postsByTrips, lineJA, lineEN, boxContentEN, boxContentJA, headerJA, headerEN, htmlJA, htmlEN, postID, postData, fileNameJA, fileNameEN, postContent;
 	for (i = 0; i < allData.ordered.posts.length; i++) {
 		imageFound = false;
 		htmlJA = [];
@@ -51,21 +163,116 @@ function createPosts() {
 		postID = allData.ordered.posts[i];
 		postData = allData.posts[postID];
 		postContent = s.sheets[postID];
-		fileNameJA = urlToFilename(postData['Link JA']);
-		fileNameEN = urlToFilename(postData['Link EN']);
-		header = [
-			'<!-- postID: ' + postID + ' -->',
+		tripID = postData.Trip;
+		postsByTrips = allData.postsByTrips[tripID];
+		fileNameJA = urlToFilename(postData.LinkJA);
+		fileNameEN = urlToFilename(postData.LinkEN);
+		headerJA = [
+			readyForCopyandPaste ? "" : "<link rel='stylesheet' type='text/css' href='css/app.css'>",
+			'<!--',
+				'\tPost title: ' + allData.titles[postID].JA,
+				'\tLabels: ' + allData.keywords[postID].JA,
+				'\tSchedule: ' + postData.Year + '.' + postData.Month,
+				'\tPermalink: ' + postData.Year + '.' + postData.Month,
+				'\tLink: ' + postData.LinkJA,
+				'\tPostID: ' + postID,
+				'\tVersion: ' + version + " " + new Date(),
+			'-->',
 			'<!-- postData: ',
 				JSON.stringify(postData, null, '\t'),
-				// JSON.stringify(postContent, null, '\t'),
+			'-->',
+			'<!-- postsByTrips: ',
+				JSON.stringify(postsByTrips, null, '\t'),
 			'-->',
 		].joinHtml('\n');
-		htmlJA.push(header);
-		htmlEN.push(header);
+		headerEN = [
+			// '<link href="css/app.css" rel="stylesheet" type="text/css">',
+			'<!--',
+				'\tPost title: ' + allData.titles[postID].EN,
+				'\tLabels: ' + allData.keywords[postID].EN,
+				'\tSchedule: ' + postData.Year + '.' + postData.Month,
+				'\tPermalink: ' + postData.Year + '.' + postData.Month,
+				'\tLink: ' + postData.LinkEN,
+				'\tPostID: ' + postID,
+				'\tVersion: ' + version + " " + new Date(),
+			'-->',
+			'<!-- postData: ',
+				JSON.stringify(postData, null, '\t'),
+			'-->',
+			'<!-- postsByTrips: ',
+				JSON.stringify(postsByTrips, null, '\t'),
+			'-->',
+		].joinHtml('\n');
 		if (postContent) {
+			//var box = '<div class="box" style="width: 40%; border: 2px solid #eee; float: right; padding: 1em; margin: 0 0 1em 1em">';
+			boxContentEN = [];
+			boxContentJA = [];
+			boxContentEN.push('<p class="languageSelector"><a href="' + postData.LinkJA + '">Japanese 日本語</a></p>');
+			boxContentJA.push('<p class="languageSelector"><a href="' + postData.LinkEN + '">English</a></p>');
+			if (postsByTrips.length > 1) {
+				var listEN = [];
+				var listJA = [];
+				for (j = 0; j < postsByTrips.length; j++) {
+					if (postsByTrips[j] === postID) {
+						listEN.push('<li class="current">' + allData.titles[postsByTrips[j]].EN + '</li>');
+						listJA.push('<li class="current">' + allData.titles[postsByTrips[j]].JA + '</li>');
+					} else {
+						listEN.push('<li><a href="' + allData.posts[postsByTrips[j]].LinkEN + '">' + allData.titles[postsByTrips[j]].EN + '</a></li>');
+						listJA.push('<li><a href="' + allData.posts[postsByTrips[j]].LinkJA + '">' + allData.titles[postsByTrips[j]].JA + '</a></li>');
+					}
+				}
+				boxContentJA.push([
+					'<p>この記事は<b>【' + allData.trips[tripID].JA + '】</b>旅行の一部を含む</p>',
+					'<ol>',
+						listJA.joinHtml('\n'),
+					'</ol>',
+				].joinHtml('\n'));
+				boxContentEN.push([
+					'<p>This post is part of <b>' + allData.trips[tripID].EN + '</b> trip that also include:</p>',
+					'<ol>',
+						listEN.joinHtml('\n'),
+					'</ol>',
+				].joinHtml('\n'));
+				// console.log(list);
+			}
+
+			boxContentEN.push("<p>Labels: " + fromKeywordsToHtml(allData.keywords[postID].EN, ", ") + "</p>");
+			boxContentJA.push("<p>ラベル：" + fromKeywordsToHtml(allData.keywords[postID].JA, japaneseComma) + "</p>");
+
+			boxContentEN.push('<p>Note: The text may not be accurate because I automatically translated it from Japanese. Please bear with me until I find the time to review the translation, thank you.</p>');
+			//htmlJA.push('<h1>' + allData.titles[postID].JA + '</h1>');
+			//htmlEN.push('<h1>' + allData.titles[postID].EN + '</h1>');
+			////////////////////////////////////
+			// Adding the period and kids age //
+			////////////////////////////////////
+			htmlJA.push(allData.trips[postData.Trip].PeriodJA + japaneseComma + allData.trips[postData.Trip].KidsAgeJA + "<br><br>");
+			htmlEN.push(allData.trips[postData.Trip].PeriodEN + ", " + allData.trips[postData.Trip].KidsAgeEN + "<br><br>");
+
+
+			// htmlEN.push(fromKeywordsToHtml(allData.keywords[postID].EN, " *** "));
+			// console.log(allData.keywords[postID].EN, " *** ");
+
+
 			for (j = 2; j < 100; j++) {
-				if (postContent["B" + j]) {
-					if (postContent["B" + j].match(/^http/)) {
+				lineJA = postContent["B" + j];
+				lineEN = postContent["C" + j];
+				if (lineJA) {
+					if (lineJA.match(/^http/)) {
+						if (readyForCopyandPaste) {
+							htmlJA.push([
+								'<a href="' + lineJA + '" imageanchor="1">',
+									'<img class="picture" src="' + lineJA + '" width="100%" />',
+								'</a>'
+							].join(''));
+							htmlEN.push([
+								'<a href="' + lineJA + '" imageanchor="1">',
+									'<img class="picture" src="' + lineJA + '" width="100%" />',
+								'</a>'
+							].join(''));
+						} else {
+							htmlJA.push('<p>' + lineJA + '</p>');
+							htmlEN.push('<p>' + lineJA + '</p>');
+						}
 						if (!imageFound) {
 							imageFound = true;
 							htmlJA.push("<!--more-->");
@@ -73,16 +280,48 @@ function createPosts() {
 						}
 						// Need to add 
 					} else {
-						htmlJA.push(postContent["B" + j] + "<br><br>");
-						htmlEN.push(postContent["C" + j] + "<br><br>");
+						if (lineJA.match(/^\* /)) {
+							htmlJA.push("<h2>" + lineJA.replace(/^\* /, '') + "</h2>");
+							htmlEN.push("<h2>" + lineEN.replace(/^\* /, '') + "</h2>");
+						} else if (lineJA.match(/^\*\* /)) {
+							htmlJA.push("<h3>" + lineJA.replace(/^\*\* /, '') + "</h3>");
+							htmlEN.push("<h3>" + lineEN.replace(/^\*\* /, '') + "</h3>");
+						} else {
+							htmlJA.push(lineJA + "<br><br>");
+							htmlEN.push(lineEN + "<br><br>");
+						}
 					}
 				}
 			}
 		}
-		console.log(postData.Ready);
+		var htmlForFileJA = [
+			headerJA,
+			'<div class="ja">',
+				'<div id="boxTop1">',
+					boxContentJA.joinHtml(),
+				'</div>',
+				htmlJA.joinHtml(),
+				'<div class="boxBottom">',
+					boxContentJA.joinHtml(),
+				'</div>',
+			'</div>',
+		].joinHtml();
+		var htmlForFileEN = [
+			headerEN,
+			'<div class="en">',
+				'<div id="boxTop1">',
+					boxContentEN.joinHtml(),
+				'</div>',
+				htmlEN.joinHtml(),
+				'<div class="boxBottom">',
+					boxContentEN.joinHtml(),
+				'</div>',
+			'</div>',
+		].joinHtml();
 		if (postData.Ready === "Yes") {
-			fs.writeFile(destinationFolder + fileNameJA, htmlJA.joinHtml(), error);
-			fs.writeFile(destinationFolder + fileNameEN, htmlEN.joinHtml(), error);
+			fs.writeFile(destinationFolder + counter.pad(3) + 'J.' + fileNameJA, htmlForFileJA, error);
+			fs.writeFile(destinationFolder + counter.pad(3) + 'E.' + fileNameEN, htmlForFileEN, error);
+			counter++;
 		}
 	}
 }
@@ -101,8 +340,8 @@ function createCommonStuff() {
 
 	for (i = 0; i < countries.length; i++) {
 		htmlFlagSmall.push(flagSmall(
-			allData.countries[countries[i]]['Countries EN'],
-			allData.countries[countries[i]]['Countries JA']
+			allData.countries[countries[i]].EN,
+			allData.countries[countries[i]].JA
 		));
 	}
 
@@ -110,8 +349,8 @@ function createCommonStuff() {
 	for (i = 0; i < countries.length; i++) {
 		//console.log(countries[i]);
 		htmlFlagLarge.push(sectionFlag(
-			allData.countries[countries[i]]['Countries EN'],
-			allData.countries[countries[i]]['Countries JA']
+			allData.countries[countries[i]].EN,
+			allData.countries[countries[i]].JA
 		));
 	}
 
