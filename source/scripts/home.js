@@ -58,7 +58,7 @@ var fs = require('fs'),
 	japaneseSpace = "　",
 	japaneseComma = "、",
 	japaneseDot = "。",
-	s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/last.json'),
+	s = require('./../../last.json'),
 	posts = [],
 	allData = {},
 	i, j,
@@ -284,17 +284,24 @@ function createPosts() {
 						}
 						// Need to add 
 					} else {
-						if (lineJA.match(/^\* /)) {
-							htmlJA.push("<h2>" + lineJA.replace(/^\* /, '') + "</h2>");
-							htmlEN.push("<h2>" + lineEN.replace(/^\* /, '') + "</h2>");
-						} else if (lineJA.match(/^\*\* /)) {
-							htmlJA.push("<h3>" + lineJA.replace(/^\*\* /, '') + "</h3>");
-							htmlEN.push("<h3>" + lineEN.replace(/^\*\* /, '') + "</h3>");
-						} else {
-							htmlJA.push(lineJA + "<br><br>");
-							htmlEN.push(lineEN + "<br><br>");
+						if (lineJA) {
+							if (!lineEN) {
+								console.log("[" + allData.titles[postID].EN + "] English missing " + lineJA);
+							} else {
+								if (lineJA.match(/^\*\*/)) {
+									htmlJA.push("<h3>" + lineJA.replace(/^\*\*/, '') + "</h3>");
+									htmlEN.push("<h3>" + lineEN.replace(/^\*\*/, '') + "</h3>");
+								} else if (lineJA.match(/^\*/)) {
+									htmlJA.push("<h2>" + lineJA.replace(/^\*/, '') + "</h2>");
+									htmlEN.push("<h2>" + lineEN.replace(/^\*/, '') + "</h2>");
+								} else {
+									htmlJA.push(lineJA + "<br><br>");
+									htmlEN.push(lineEN + "<br><br>");
+								}
+							}
 						}
 					}
+
 				}
 			}
 		}
