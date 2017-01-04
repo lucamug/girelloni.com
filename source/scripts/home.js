@@ -1,7 +1,8 @@
 // Commands
 //
 // node source/scripts/home.js
-// node source/scripts/google-spreadsheets-download.js > ./blog.2016-12-20T11:07.json
+// node source/scripts/google-spreadsheets-download.js > ./blog.2016-12-20T00:00.json
+// node source/scripts/google-spreadsheets-download.js > ./last.json
 //
 // css goes into https://www.blogger.com/template-editor.g?blogID=3237061565949672219
 //
@@ -26,7 +27,10 @@ http://www.kozuredeyoroppa.com/2010/10/france-paris-reims.html
 http://www.kozuredeyoroppa.com/2010/08/finland-helsinki.html
 */
 
-var version = "0.14";
+//
+// "aチ".match(/[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]/)
+
+var version = "0.20";
 var readyForCopyandPaste = true;
 
 Array.prototype.joinHtml = function () {
@@ -54,7 +58,7 @@ var fs = require('fs'),
 	japaneseSpace = "　",
 	japaneseComma = "、",
 	japaneseDot = "。",
-	s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/blog.2016-12-25T00:00.json'),
+	s = require('/Users/luca.a.mugnaini/kozuredeyoroppa/last.json'),
 	posts = [],
 	allData = {},
 	i, j,
@@ -63,7 +67,7 @@ var fs = require('fs'),
 createObject(s.sheets.Data, 'countries', "A", "BC", allData);
 createObject(s.sheets.Data, 'locations', "D", "EFGH", allData);
 createObject(s.sheets.Data, 'trips', "I", "JKLMNO", allData);
-createObject(s.sheets.Posts, 'posts', "A", "BCDEFGHIJKLMNOPQ", allData);
+createObject(s.sheets.Posts, 'posts', "A", "BCDEFGHIJKLMNOPQR", allData);
 createPostsByTrips();
 createTitlesAndKeywords();
 createCommonStuff();
