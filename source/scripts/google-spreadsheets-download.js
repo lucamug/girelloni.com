@@ -11,9 +11,9 @@ function simplifyJson(feed) {
 			cells: {}
 		};
 	entry.map(function (value) {
-		var title = $t(value, "title");
-		var content = $t(value, "content");
-		var id = $t(value, "id").match(/[^/]*$/)[0];
+		var title = $t(value, "title"),
+			content = $t(value, "content"),
+			id = $t(value, "id").match(/[^/]*$/)[0];
 		if (id.match(/^R\d+C\d+$/)) {
 			if (content !== '') {
 				r.cells[title] = content;
@@ -26,6 +26,7 @@ function simplifyJson(feed) {
 	if (JSON.stringify(r.cells) === JSON.stringify({})) {
 		delete r.cells;
 	}
+	console.log(JSON.stringify(r, null, "\t"));
 	return r;
 }
 
@@ -57,7 +58,7 @@ function requestSpreadsheet(id, callback) {
 		simple1.sheets = {};
 		sheets.map(function (value) {
 			var url = urlStart + "cells/" + id + "/" + value + urlEnd;
-			requestJson(url, function retrieveSheet(data) {
+			requestJson(url, function (data) {
 				var simple2 = simplifyJson(data.feed),
 					title = simple2.title;
 				simple1.sheets[title] = simple2.cells;
@@ -70,7 +71,7 @@ function requestSpreadsheet(id, callback) {
 	});
 }
 
-//requestSpreadsheet("1Wl4MriZ-4HM_DmXWxHyH7Xt2VKoRPK3RfCji_KhFa7U", function (data) {
-requestSpreadsheet("1fW-LlMLBUNP6d7UaAP8C1PuBhKBOcJpE62dBYwr1vKA", function (data) {
+requestSpreadsheet("1Wl4MriZ-4HM_DmXWxHyH7Xt2VKoRPK3RfCji_KhFa7U", function (data) { // test
+	//requestSpreadsheet("1fW-LlMLBUNP6d7UaAP8C1PuBhKBOcJpE62dBYwr1vKA", function (data) { // blog
 	console.log(JSON.stringify(data, null, "\t"));
 });
