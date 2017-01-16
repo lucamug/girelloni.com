@@ -1,17 +1,17 @@
-var request = require("request");
-
-function simplifyJson(feed) {
+"use strict";
+let request = require("request");
+let organizeData = (feed) => {
 	// Parse data as it comes from Google Spreadsheet and
 	// reorganize it in a simplified data structure
-	var entry = feed.entry,
+	let entry = feed.entry,
 		r = {
 			title: $t(feed, "title"),
 			orderedSheetsTitle: [],
 			orderedSheetsId: [],
 			cells: {}
 		};
-	entry.map(function (value) {
-		var title = $t(value, "title"),
+	entry.map((value) => {
+		let title = $t(value, "title"),
 			content = $t(value, "content"),
 			id = $t(value, "id").match(/[^/]*$/)[0];
 		if (id.match(/^R\d+C\d+$/)) {
@@ -26,18 +26,16 @@ function simplifyJson(feed) {
 	if (JSON.stringify(r.cells) === JSON.stringify({})) {
 		delete r.cells;
 	}
-	console.log(JSON.stringify(r, null, "\t"));
 	return r;
 }
 
-function $t(value, name) {
+let $t = (value, name) => {
 	return value[name].$t;
 }
 
-function requestJson(url, callback) {
-	request({ url: url, json: true }, function (err, response, data) {
+let requestJson = (url, callback) => {
+	request({ url: url, json: true }, (err, response, data) => {
 		if (!err && response.statusCode === 200) {
-			// console.log(JSON.stringify(data, null, "\t"));
 			return callback(data);
 		} else {
 			if (err) {
@@ -47,19 +45,19 @@ function requestJson(url, callback) {
 	});
 }
 
-function requestSpreadsheet(id, callback) {
-	var urlStart = "https://spreadsheets.google.com/feeds/",
+let downloadSpreadsheet = (id, callback) => {
+	let urlStart = "https://spreadsheets.google.com/feeds/",
 		urlEnd = "/public/basic?alt=json",
 		url = urlStart + "worksheets/" + id + urlEnd;
-	requestJson(url, function (data) {
-		var simple1 = simplifyJson(data.feed),
+	requestJson(url, (data) => {
+		let simple1 = organizeData(data.feed),
 			sheets = simple1.orderedSheetsId,
 			counter = sheets.length;
 		simple1.sheets = {};
-		sheets.map(function (value) {
-			var url = urlStart + "cells/" + id + "/" + value + urlEnd;
-			requestJson(url, function (data) {
-				var simple2 = simplifyJson(data.feed),
+		sheets.map((value) => {
+			let url = urlStart + "cells/" + id + "/" + value + urlEnd;
+			requestJson(url, (data) => {
+				let simple2 = organizeData(data.feed),
 					title = simple2.title;
 				simple1.sheets[title] = simple2.cells;
 				counter--;
@@ -70,8 +68,4 @@ function requestSpreadsheet(id, callback) {
 		});
 	});
 }
-
-requestSpreadsheet("1Wl4MriZ-4HM_DmXWxHyH7Xt2VKoRPK3RfCji_KhFa7U", function (data) { // test
-	//requestSpreadsheet("1fW-LlMLBUNP6d7UaAP8C1PuBhKBOcJpE62dBYwr1vKA", function (data) { // blog
-	console.log(JSON.stringify(data, null, "\t"));
-});
+module.exports = downloadSpreadsheet;
