@@ -1,8 +1,8 @@
 // Commands
 //
-// node source/scripts/google-spreadsheets-download.js > ./blog.2016-12-20T00:00.json
-// node source/scripts/google-spreadsheets-download.js > ./last.json
-// node source / scripts / home.js
+// $ node source/scripts/download.girelloni.com.js > ./blog.2017-01-18T00:00.json
+// $ node source/scripts/download.girelloni.com.js > ./last.json
+// $ node source/scripts/home.js
 
 //
 // css goes into https://www.blogger.com/template-editor.g?blogID=3237061565949672219
