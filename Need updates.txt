@@ -12,7 +12,7 @@ J cefalu
 J modica
 J siracusa
 
-J Warsaw
+Warsaw
 Lakes
 Torun
 Malbork
@@ -23,10 +23,11 @@ Viareggio
 
 Seville
 
-Round trip 1
+J Round trip 1
 Round trip 2
 Round trip 3
 
+TO DO
 
 Convert link in links
 Remove comments on //
