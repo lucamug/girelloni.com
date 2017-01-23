@@ -1,3 +1,10 @@
+Site maps:
+
+http://ja.girelloni.com/sitemap.xml
+http://ja.girelloni.com/sitemap-pages.xml
+http://ja.girelloni.com/atom.xml?redirect=false&start-index=1&max-results=500
+
+
 Need updates: 
 
 J Hamburg
@@ -12,9 +19,9 @@ J cefalu
 J modica
 J siracusa
 
-Warsaw
-Lakes
-Torun
+J Warsaw
+J Lakes
+J Torun
 Malbork
 Park
 Gdnask
