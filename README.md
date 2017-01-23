@@ -9,12 +9,12 @@ It also handle bilingual blogs.
 This the Google spreadsheet used to generate the blog:
 Girelloni
 
-[https://docs.google.com/spreadsheets/d/1fW-LlMLBUNP6d7UaAP8C1PuBhKBOcJpE62dBYwr1vKA/pubhtml](Google Spreadsheet)
+https://docs.google.com/spreadsheets/d/1fW-LlMLBUNP6d7UaAP8C1PuBhKBOcJpE62dBYwr1vKA/pubhtml
 
 This is the resulting blog:
 
-* English: [http://www.girelloni.com](www.girelloni.com)
-* Japanese: [http://ja.girelloni.com](http://ja.girelloni.com)
+* English: http://www.girelloni.com
+* Japanese: http://ja.girelloni.com
 
 ## Installation
 
