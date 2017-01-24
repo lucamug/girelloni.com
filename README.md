@@ -1,5 +1,7 @@
 # girelloni.com - A tool to generate and maintain a blog using Google spreadsheets
 
+![Screenshot](https://1.bp.blogspot.com/-1oT2OE_ZPfI/WIff-U2e5UI/AAAAAAAAFoM/FfCfryfFRNUAbE3gaHf_9fMAY4kGucJXwCK4B/s320/Screen%2BShot%2B2017-01-25%2Bat%2B00.13.26.png)
+
 The tool automatically download data from Google Drive and generate all the posts of the Blog.
 
 It handles multi-part posts, labels, images, etc.
