@@ -95,6 +95,8 @@ function createTitlesAndKeywords() {
 			titleEN.push(allData.locations[postData.Location1].EN);
 		}
 		if (postData.Location2) {
+			//console.log(postData.Location2);
+			//console.log(allData.locations[postData.Location2]);
 			titleJA.push(allData.locations[postData.Location2].JA);
 			titleEN.push(allData.locations[postData.Location2].EN);
 		}
@@ -464,7 +466,7 @@ function createObject(data, type, strID, str, r) {
 	r[type] = r[type] || {};
 	r.ordered = r.ordered || {};
 	r.ordered[type] = r.ordered[type] || [];
-	for (i = 2; i < 100; i++) {
+	for (i = 2; i < 300; i++) {
 		ID = data[strID + i];
 		if (ID) {
 			r.ordered[type].push(ID);
